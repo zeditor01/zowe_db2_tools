@@ -23,17 +23,18 @@ At the time of writing, the main System Requirements for Zowe are
 
 
 ## 2. Unified Management Server pre-requisites
+The worked examples in this repository are based around Unified Management Server V1.2
 
-UMS needs
+You should check the requirements for the current version of UMS, as documented on the [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-prerequisite-hardware-software)
+
+
+At the time of writing, the main System Requirements for UMS are
 * z/OS V2.5 or later
 * ICSF
 * Java 17 
 * RACF (or other SAF)
 * minimum versions of ZOWE
 * and a number of PTF levels are documented at the link above.
-
-Check the [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-prerequisite-hardware-software) for the current list of pre-requisites.
-
 
 Some of the functionality of Unified Management Server and Db2 Admin Foundation depends on whether other tools are installed.
 When this is the case, there will be a "tools discovery" PTF to the underlying tool, so that it's function may be identified and invoked.
