@@ -4,6 +4,7 @@
 
 1. Zowe pre-requisites
 2. Unified Management Server pre-requisites
+3. Checking if these pre-requisites are installed
 
 ## 1. Zowe pre-requisites
 The worked examples in this repository are based around Zowe v2.18
@@ -40,3 +41,14 @@ When this is the case, there will be a "tools discovery" PTF to the underlying t
 A good example is the Storage tab for tablespaces and indexspaces. This depends on 
 * the PTF for [APAR PH55177](https://www.ibm.com/support/pages/apar/PH55177) in Db2 Administration Tool version 13 to provide discovery service
 * the PTF for [APAR PH54968](https://www.ibm.com/support/pages/apar/PH54968) in Db2 Administration Foundation to ask for discovery
+
+
+## 3. Checking if these pre-requisites are installed
+
+Experienced systems programmers will know how to check all these pre-requisites. The remainder of this section is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
+
+### AXR (System REXX)
+This is a standard component of z/OS, and should be present. Check it by issueing console command ```d a,axr``` and check the system log for positive confirmation, like below.
+
+ If system REXX is installed, but not active, you can start it with console command ```START AXRPSTRT```
+
