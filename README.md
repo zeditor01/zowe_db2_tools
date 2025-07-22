@@ -11,7 +11,7 @@ This repository is a worked example of implementing the Zowe-based Db2 tools in 
 # The Journey
 The image below represents the journey that many DB2 z/OS sites will be making.
 
-![thejourney](/images/thejourney.JPG)
+![thejourney](/images/thejourney.jpg)
 
 
 The starting position of many Db2 z/OS sites will be similar to the left side of the diagram.
