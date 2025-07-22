@@ -58,7 +58,7 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 6. Deploying Db2 for z/OS Developer Extension in VSCODE
 
-[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_vscode.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
+[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_db2devext.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
 
 ## Step 7. Deploying DB2 Automation Expert.
 
