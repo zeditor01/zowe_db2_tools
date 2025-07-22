@@ -22,7 +22,11 @@ The starting position of many Db2 z/OS sites will be similar to the left side of
 *  Data Server Manager has also been withdrawn from support.
 *  Visual Explain tooling has been re-packaged as a z/OS liberty based SQL tuning server, accessible via Zowe or VS Code.
 
- In short, the productivity of a good graphcal user interface and easy integration between Db2 tools services is now provided through Zowe and/or VS Code.
+IBM has delivered new Db2 z/OS tooling interfaces since the Zowe project was released, as represented on the right side of the diagram.
+* Zowe is a framework that provide API-drive integration for tools, and supports browser-based user interfaces directly from z/OS. 
+* Db2 tools are deployed inside the Zowe framework to provide a unified browser-based user interface, and integration of tooling services with RESTful APIs. 
+
+There are two Graphical User Interfaces, aimed at different Db2 roles.
 * The Db2 tooling in Zowe environment is targetted firmly at the DBA role.
 * The Db2 tooling in the VSCODE environment is targetted firmly at the developer role.
 
