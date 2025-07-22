@@ -160,9 +160,21 @@ Option 2 is a cross zone query, which will show if a SYSMOD exists in any or all
 
 ![smp04](/images/smp04.jpg)
 
-
+So, we enter the APAR number ( or PTF number ) into the cross zone query panel.
 
 ![smp05](/images/smp05.jpg)
+
+And we find out whether that SYSMOD is installed in this system.
+
+![smp06](/images/smp06.jpg)
+
+When I found out that PH55177 was not installed in my system, I ordered it from ShopZ. However, when I ran the SMPE jobs to receive the fix, the SMPE process that there were no SYSMODS to apply. I was confused.
+
+It turns out that this installation of DB2 Administration Tool was installed from a code level that was made available after PH55177 was produced, and the function from this PTF is built into the installed product code, even though the SMPE CSI is unaware of it. I was able to check this by reading the details of PH55177, and learning that it places 2 members (ADBDSCVP and ADBDSCVS) into the SADBSAMP PDS.
+
+![smp08](/images/smp07.jpg)
+
+![smp08](/images/smp08.jpg)
 
 
 
