@@ -53,11 +53,11 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 3. Deploying Unified Management Server
 
-[Deploy_UMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_ums.md) is a simple worked example of downloading, installing and verifying Unified Management Server.
+[Deploy_UMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/103_deploy_ums.md) is a simple worked example of downloading, installing and verifying Unified Management Server.
 
 ## Step 4. Deploying Db2 Administration Foundation
 
-[Deploy_DAF](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_daf.md) is a simple worked example of downloading, installing and verifying Db2 Administration Foundation.
+[Deploy_DAF](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/104_deploy_daf.md) is a simple worked example of downloading, installing and verifying Db2 Administration Foundation.
 
 ## Step 5 Deploying SQL Tuning Services
 
