@@ -37,25 +37,32 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 1. Pre-Requisite Maintenance
 
-[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-requisite_maintenance.md) describes software maintenance levels and PTFs for Db2 z/OS and DB2 Administration tool, to support the Zowe Db2 tools.   
+[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-requisite_maintenance.md) describes software maintenance for Db2 z/OS and DB2 Administration tool, required to support the Zowe Db2 tools.   
 
 ## Step 2. Deploying Zowe
+
+[Deploy_Zowe](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_zowe.md) is a simple worked example of downloading, installing and verifying Zowe.
 
 
 ## Step 3. Deploying Unified Management Server
 
+[Deploy_UMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_ums.md) is a simple worked example of downloading, installing and verifying Unified Management Server.
 
 ## Step 4. Deploying Db2 Administration Foundation
 
+[Deploy_DAF](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_daf.md) is a simple worked example of downloading, installing and verifying Db2 Administration Foundation.
 
 ## Step 5 Deploying SQL Tuning Services
 
+[Deploy_TMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_tms.md) is a simple worked example of downloading, installing and verifying Db2 z/OS SQL Tuning Services, or Query Workload Tuner.
 
 ## Step 6. Deploying Db2 for z/OS Developer Extension in VSCODE
 
+[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_vscode.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
 
 ## Step 7. Deploying DB2 Automation Expert.
 
+[Deploy_DAE](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_dae.md) is a simple worked example of downloading, installing and verifying Db2 Automation Experience.
 
 
  
