@@ -170,9 +170,9 @@ And we find out whether that SYSMOD is installed in this system.
 
 When I found out that PH55177 was not installed in my system, I ordered it from ShopZ. However, when I ran the SMPE jobs to receive the fix, the SMPE process that there were no SYSMODS to apply. I was confused.
 
-It turns out that this installation of DB2 Administration Tool was installed from a code level that was made available after PH55177 was produced, and the function from this PTF is built into the installed product code, even though the SMPE CSI is unaware of it. I was able to check this by reading the details of PH55177, and learning that it places 2 members (ADBDSCVP and ADBDSCVS) into the SADBSAMP PDS.
+It turns out that this installation of DB2 Administration Tool was installed from a code level that was made available after PH55177 was produced, and the function from this PTF is built into the installed product code, even though the SMPE CSI is unaware of it. I was able to check this by reading the details of PH55177, and learning that it places 2 members (ADBDSCVP and ADBDSCVS) into the SADBSAMP PDS. These are the members that support "Discovery" by Db2 Administration Foundation of Services provided by Db2 Administration Tool. We will use these member later in the deployment project.
 
-![smp08](/images/smp07.jpg)
+
 
 ![smp08](/images/smp08.jpg)
 
