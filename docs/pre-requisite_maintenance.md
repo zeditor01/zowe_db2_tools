@@ -45,7 +45,9 @@ A good example is the Storage tab for tablespaces and indexspaces. This depends 
 
 ## 3. Checking if these pre-requisites are installed
 
-Experienced systems programmers will know how to check all these pre-requisites. The remainder of this section is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
+Experienced systems programmers will know how to check all these pre-requisites. 
+
+The target audience for this github repository includes novice z/OS persons. The remainder of this section is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
 
 ### 3.1 AXR (System REXX)
 This is a standard component of z/OS, and should be present. Check it by issuing console command ```d a,axr``` and check the system log for positive confirmation, like below.
@@ -102,23 +104,65 @@ You can control the environment parameters for any user by editing their .profil
 
 ### 3.6 NodeJS
 
+Check the install path. NodeJS is installed by convention in path ```/usr/lpp/IBM/cnj/```
+
 
 ### 3.7 TSO Region Size - minimum 65,536 KB
+
+Logon to the RACF Panels, and select user profiles, and display the user profile you want to.
+
+![racf01](/images/racf01.jpg)
+
+check the segments that you wish to view ( e.g. TSO and OMVS )
+
+![racf02](/images/racf02.jpg)
+
+The report shows details of the TSO and OMVS segments, including max regiion size
+
+![racf03](/images/racf03.jpg)
 
 
 ### 3.8 Userids - OMVS Segment
 
+The previous check showed the existence of an OMVS segment, and the properties of that segment.
 
 ### 3.9 ICSF
 
+The Integrated Cryptographic Service Facility (ICSF) is a software component of z/OS providing cryptographic APIs and services that leverage IBM mainframe cryptographic hardware.
+Check it by issueing console command ```D A,CSF``` and check the system log for positive confirmation.
 
-### 3.10 RACF (or other SAF)
-
-
-### 3.11 PTFs for DB2 Administration Tool
-
+![checkcsf](/images/check_csf.jpg)
 
 
+### 3.10 PTFs for DB2 Administration Tool
+Products like Db2 Administration Tool are installed using SMP/E ( System Modification Program Extended ). SMPE uses CSI datasets ( Consolidated Software Inventory ) to record which software products and components are installed, and what maintenance has been applied to them.
+
+If you access SMP/E through the ISPF menue, you can run a CSI Query as follows.
+
+From the SMP/E main menu, select "1" and clear the name of the CSI dataset, in order to retrieve a list of all the CSIs in this system.
+
+![smp01](/images/smp01.jpg)
+
+Some of the CSI names will reflect the name of the products that they store SMPE data about. The 3 character component code for Db2 Administration tool is ADB. The CSI zone for Db2 Administration Tool is ```ADBD10.GLOBAL.CSI```
+
+![smp02](/images/smp02.jpg)
+
+Go back to the main SMPE panel, and select option 3 to perform a CSI query
+
+![smp03](/images/smp03.jpg)
+
+CSI datasets have 3 zones. Any code such as PTFs are referred to as SYSMODS. The SMP mainenance process moves these SYSMODS through the three zones in the CSI dataset.
+1. SYSMODS are received (from ShopZ) into the Global Zone
+2. SYSMODS are applied into the Target Zone (in order to be useable)
+3. SYSMODS are accepted into the Distribution Zone, once fully tested (in order for the software to be copied to other LPARs)
+
+Option 2 is a cross zone query, which will show if a SYSMOD exists in any or all 3 zones.
+
+![smp04](/images/smp04.jpg)
+
+
+
+![smp05](/images/smp05.jpg)
 
 
 
