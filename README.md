@@ -35,7 +35,9 @@ There are two Graphical User Interfaces, aimed at different Db2 roles.
 The pages in this github repository provide a worked example for the 7 steps needed to add modern UI and integrations to the Db2 tools.
 
 
-## Step 1. Pre-Requisite Maintenance
+## Step 1. [Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-reqisite_maintenance.md)   
+
+blah blah
 
 
 ## Step 2. Deploying Zowe
