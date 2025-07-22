@@ -55,9 +55,14 @@ This is a standard component of z/OS, and should be present. Check it by issuein
 If system REXX is installed, but not active, you can start it with console command ```START AXRPSTRT```
 
 ### 3.2 CEA (Common Event Adapter - of z/OSMF)
+The Common Event Adapter (CEA) is an essential component for many z/OSMF (z/OS Management Facility) services, providing event delivery and the ability to manage TSO/E user address spaces. Check it by issueing console command ```d a,cea``` and check the system log for positive confirmation.
 
+You can start CIM with the z/OS console command ```F CEA,MODE=FULL```
 
 ### 3.3 CIM (Common Information Model - of z/OSMF)
+The CIM component (Common Information Model) is a foundational element for z/OSMF, enabling a standardized way to manage and monitor z/OS systems using industry data models and APIs. Check it by issueing console command ```D A,CFZCIM``` and check the system log for positive confirmation.
+
+You can start CIM with the z/OS console command ```S CFZCIM```
 
 
 ### 3.4 CONSOLE and CONSPROF commands must exist in the authorised command table
