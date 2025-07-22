@@ -61,15 +61,15 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 5 Deploying SQL Tuning Services
 
-[Deploy_TMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_tms.md) is a simple worked example of downloading, installing and verifying Db2 z/OS SQL Tuning Services, or Query Workload Tuner.
+[Deploy_TMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/105_deploy_tms.md) is a simple worked example of downloading, installing and verifying Db2 z/OS SQL Tuning Services, or Query Workload Tuner.
 
 ## Step 6. Deploying Db2 for z/OS Developer Extension in VSCODE
 
-[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_db2devext.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
+[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/106_deploy_db2devext.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
 
 ## Step 7. Deploying DB2 Automation Expert.
 
-[Deploy_DAE](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_dae.md) is a simple worked example of downloading, installing and verifying Db2 Automation Experience.
+[Deploy_DAE](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/107_deploy_dae.md) is a simple worked example of downloading, installing and verifying Db2 Automation Experience.
 
 
  
