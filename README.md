@@ -48,7 +48,7 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 2. Deploying Zowe
 
-[Deploy_Zowe](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_zowe.md) is a simple worked example of downloading, installing and verifying Zowe.
+[Deploy_Zowe](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/102_deploy_zowe.md) is a simple worked example of downloading, installing and verifying Zowe.
 
 
 ## Step 3. Deploying Unified Management Server
