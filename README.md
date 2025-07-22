@@ -24,7 +24,9 @@ The starting position of many Db2 z/OS sites will be similar to the left side of
 
 IBM has delivered new Db2 z/OS tooling interfaces since the Zowe project was released, as represented on the right side of the diagram.
 * Zowe is a framework that provide API-drive integration for tools, and supports browser-based user interfaces directly from z/OS. 
-* Db2 tools are deployed inside the Zowe framework to provide a unified browser-based user interface, and integration of tooling services with RESTful APIs. 
+* Db2 tools are deployed inside the Zowe framework to provide a unified UI experience, and integration via RESTful APIs.
+* No more client or server installations are needed for DBAs: Everything runs on z/OS.
+* Developers can access these database services from the ubiquitous VSCODE IDE.
 
 There are two Graphical User Interfaces, aimed at different Db2 roles.
 * The Db2 tooling in Zowe environment is targetted firmly at the DBA role.
