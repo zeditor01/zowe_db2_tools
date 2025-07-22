@@ -32,6 +32,13 @@ There are two Graphical User Interfaces, aimed at different Db2 roles.
 * The Db2 tooling in Zowe environment is targetted firmly at the DBA role.
 * The Db2 tooling in the VSCODE environment is targetted firmly at the developer role.
 
+Here are a couple of videos to give a brief insight into the end result. (coming soon)
+* [Navigating the Db2 Admin Foundation UI]()
+* [SQL Tuning Services through Zowe]()
+* [SQL Tuning Services through VSCODE]()
+
+  
+
 The pages in this github repository provide a worked example for the 7 steps needed to add modern UI and integrations to the Db2 tools.
 
 
