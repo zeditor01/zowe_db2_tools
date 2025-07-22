@@ -37,7 +37,7 @@ The pages in this github repository provide a worked example for the 7 steps nee
 
 ## Step 1. Pre-Requisite Maintenance
 
-[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-reqisite_maintenance.md) describes software maintenance levels and PTFs for Db2 z/OS and DB2 Administration tool, to support the Zowe Db2 tools.   
+[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-requisite_maintenance.md) describes software maintenance levels and PTFs for Db2 z/OS and DB2 Administration tool, to support the Zowe Db2 tools.   
 
 ## Step 2. Deploying Zowe
 
