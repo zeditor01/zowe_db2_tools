@@ -5,7 +5,7 @@ Back to / [Repository Home Page](https://github.com/zeditor01/zowe_db2_tools/tre
 
 Experienced systems programmers will know how to check all these pre-requisites. 
 
-The target audience for this github repository includes novice z/OS persons. The remainder of this section is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
+The target audience for this github repository includes novice z/OS persons. This page is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
 
 ## 1 AXR (System REXX)
 This is a standard component of z/OS, and should be present. Check it by issuing console command ```d a,axr``` and check the system log for positive confirmation, like below.
