@@ -3,8 +3,7 @@
 # Pre-Requisite Maintenance
 
 1. Zowe pre-requisites
-2. Db2 z/OS V13 maintenance level
-3. Db2 Administration Tool maintenance level 
+2. Unified Management Server pre-requisites
 
 ## 1. Zowe pre-requisites
 The worked examples in this repository are based around Zowe v2.18
@@ -24,11 +23,20 @@ Before proceeding you should always check the latest requirements. However, the 
 
 ## 2. Unified Management Server pre-requisites
 
-Checing the [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-prerequisite-hardware-software). The main requirements are
+UMS needs
+* z/OS V2.5 or later
+* ICSF
+* Java 17 
+* RACF (or other SAF)
+* minimum versions of ZOWE
+* and a number of PTF levels are documented at the link above.
+
+Check the [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-prerequisite-hardware-software) for the current list of pre-requisites.
 
 
+Some of the functionality of Unified Management Server and Db2 Admin Foundation depends on whether other tools are installed.
+When this is the case, there will be a "tools discovery" PTF to the underlying tool, so that it's function may be identified and invoked.
 
-## 2. Db2 z/OS V13 maintenance level
-
-
-## 3. Db2 Administration Tool maintenance level 
+A good example is the Storage tab for tablespaces and indexspaces. This depends on 
+* the PTF for [APAR PH55177](https://www.ibm.com/support/pages/apar/PH55177) in Db2 Administration Tool version 13 to provide discovery service
+* the PTF for [APAR PH54968](https://www.ibm.com/support/pages/apar/PH54968) in Db2 Administration Foundation to ask for discovery
