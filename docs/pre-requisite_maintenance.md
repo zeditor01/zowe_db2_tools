@@ -50,5 +50,7 @@ Experienced systems programmers will know how to check all these pre-requisites.
 ### AXR (System REXX)
 This is a standard component of z/OS, and should be present. Check it by issueing console command ```d a,axr``` and check the system log for positive confirmation, like below.
 
- If system REXX is installed, but not active, you can start it with console command ```START AXRPSTRT```
+![checkaxr](/images/checkaxr.jpg)
+
+If system REXX is installed, but not active, you can start it with console command ```START AXRPSTRT```
 
