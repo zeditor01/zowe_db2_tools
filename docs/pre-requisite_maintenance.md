@@ -47,10 +47,50 @@ A good example is the Storage tab for tablespaces and indexspaces. This depends 
 
 Experienced systems programmers will know how to check all these pre-requisites. The remainder of this section is aimed at novice systems programmers who may want a little guidance on how to check these prequisites on their system.
 
-### AXR (System REXX)
+### 3.1 AXR (System REXX)
 This is a standard component of z/OS, and should be present. Check it by issueing console command ```d a,axr``` and check the system log for positive confirmation, like below.
 
-![checkaxr](/images/checkaxr.jpg)
+![checkaxr](/images/check_axr.jpg)
 
 If system REXX is installed, but not active, you can start it with console command ```START AXRPSTRT```
+
+### 3.2 CEA (Common Event Adapter - of z/OSMF)
+The Common Event Adapter (CEA) is an essential component for many z/OSMF (z/OS Management Facility) services, providing event delivery and the ability to manage TSO/E user address spaces. Check it by issueing console command ```d a,cea``` and check the system log for positive confirmation.
+
+You can start CIM with the z/OS console command ```F CEA,MODE=FULL```
+
+### 3.3 CIM (Common Information Model - of z/OSMF)
+The CIM component (Common Information Model) is a foundational element for z/OSMF, enabling a standardized way to manage and monitor z/OS systems using industry data models and APIs. Check it by issueing console command ```D A,CFZCIM``` and check the system log for positive confirmation.
+
+You can start CIM with the z/OS console command ```S CFZCIM```
+
+
+### 3.4 CONSOLE and CONSPROF commands must exist in the authorised command table
+
+
+### 3.5 Java (V17 or later)
+
+
+### 3.6 NodeJS
+
+
+### 3.7 TSO Region Size - minimum 65,536 KB
+
+
+### 3.8 Userids - OMVS Segment
+
+
+### 3.9 ICSF
+
+
+### 3.10 RACF (or other SAF)
+
+
+### 3.11 PTFs for DB2 Administration Tool
+
+
+
+
+
+
 
