@@ -1,4 +1,4 @@
-/ [Repository Home Page](https://github.com/zeditor01/zowe_db2_tools/tree/main) / [Pre-Requisites Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/101_pre-requisites.md)
+Back to / [Repository Home Page](https://github.com/zeditor01/zowe_db2_tools/tree/main) / [Pre-Requisites Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/101_pre-requisites.md)
 
 
 ## 3. Checking if these pre-requisites are installed
