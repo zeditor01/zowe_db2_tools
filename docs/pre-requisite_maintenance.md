@@ -79,9 +79,25 @@ These members define which TSO/E commands can run authorized. View the table usi
 ![ikjtsozz](/images/ikjtsozz.jpg)
 
 
-
-
 ### 3.5 Java (V17 or later)
+
+Open a USS shell ( for example with ssh from a terminal client ) and enter the command ```java -version```.
+
+![checkjava](/images/check_java.jpg)
+
+The example above only shows Java V11. Java 17 may be installed on the z/OS system, but may not be set in my shell profile.
+
+You can see which versions of java are installed by checking ```/usr/lpp/IBM/java```
+
+![java_versions](/images/java_versions.jpg)
+
+You can check the environment parameters for any user by executing the ```env``` command 
+
+![java_env](/images/java_env.jpg)
+
+You can control the environment parameters for any user by editing their .profile
+
+![javaprofile](/images/java_profile.jpg)
 
 
 ### 3.6 NodeJS
