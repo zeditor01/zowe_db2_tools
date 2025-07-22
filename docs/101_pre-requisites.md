@@ -9,9 +9,9 @@ Back to / [Home Page](https://github.com/zeditor01/zowe_db2_tools/tree/main)
 ## 1. Zowe pre-requisites
 The worked examples in this repository are based around Zowe v2.18
 
-The requirements for the current version of Zowe are documented at the [Zowe website](https://docs.zowe.org/stable/user-guide/zos-components-installation-checklist)
-
-Before proceeding you should always check the latest requirements. However, the main System Requirements are listed here
+You should check the requirements for the current version of Zowe, as documented on the [Zowe website](https://docs.zowe.org/stable/user-guide/zos-components-installation-checklist)
+ 
+At the time of writing, the main System Requirements for Zowe are
 * AXR (System REXX)
 * CEA (Common Event Adapter - of z/OSMF)
 * CIM (Common Information Model - of z/OSMF)
