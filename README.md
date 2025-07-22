@@ -1,7 +1,7 @@
 # Zowe-based Db2 z/OS tools
 Worked examples for deploying IBM Db2 z/OS Tools inside the Zowe project.
 
-IBM's Db2 tools are evolving to embrace a unified browser-based user interface, and integration of tooling services with RESTful APIs. 
+IBM's Db2 tools have evolved to embrace a unified browser-based user interface, and integration of tooling services with RESTful APIs. 
 These innovations are based around the Zowe foundation.
 There is no sudden migration here.
 The new paradigm augments the existing 3270 and JCL ways of working, allowing a choice of tooling interface.
