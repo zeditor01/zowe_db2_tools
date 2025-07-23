@@ -10,8 +10,11 @@ This page describes the steps to deploy Zowe.
 2. edit zowe.yaml to configure the zowe server
 3. deploy the zowe server (including creating keyring and certificates)
 4. start the zowe server
+5. test Zowe from a web browser.
    
 ![stage2](/images/zowestage2.jpg)
+
+## 2.1 Installing the Zowe code.
 
 There are 4 options for installing the Zowe server-side component
 1. Convenience build (unpack a pax file)
@@ -62,7 +65,7 @@ This matches the file structure described by the Zowe documentation
 ![zowe_directory](/images/zowedir.JPG)
 
 
-## 3. Editing the zowe.yaml file.
+## 2.2 Editing the zowe.yaml file.
 
 Within /usr/lpp/zwe/zwe217 , copy example-zowe.yaml to zowe.yaml for editing.
 
@@ -139,7 +142,9 @@ Be careful of case sensitive parameters (paths and certificate details)
 Once you've edited the zowe.yaml file, everything else should flow easily.
 
 
-## 4. Installing the ZOWE instance libraries.
+## 2.3 Deploy the Zowe Server
+
+### 2.3.1 Installing the ZOWE instance libraries.
 
 
 The zowe.yaml file controls the ZWE INSTALL Script.
@@ -172,7 +177,7 @@ It should chunter away and create the following z/OS datasets
 
 That's it : The execution libraries are in place.
 
-## 5. Configuring the ZOWE instance.
+### 2.3.2 Configuring the ZOWE instance.
 
 You can run the commands individually - but the ```--update-config --allow-overwrite``` options don't work so well like that.
 
@@ -219,15 +224,15 @@ ZWESISTC
 ZWESLSTC
 ```
 
-## 6. Operating ZOWE.
+## 2.4 Operating ZOWE.
 
 A few pieces of housekeeping before starting Zowe
 
-### 6.1 Edit zowe.yaml again
+### Edit zowe.yaml again
 
 Need to edit the zowe.yaml file: Need to comment out ```createZosmfTrust: true``` for zowe config validate and zowe start
 
-### 6.2 Edit Program Properties Table for these tasks
+### Edit Program Properties Table for these tasks
 
 Edit USER.Z31A.PARMLIB(SCHEDAL)
 ```
@@ -235,16 +240,16 @@ PPT PGMNAME(ZWESIS01) NOSWAP KEY(4) /* Zowe cross memory           */
 PPT PGMNAME(ZWESAUX)  NOSWAP KEY(4) /* Zowe auxiliary (AUX)        */
 ```
 
-### 6.3 Start ZWESISTC
+### Start ZWESISTC
 
 z/OS operator console command: ```S ZWESISTC,REUSASID=YES```
 
-### 6.4 Start ZWESLSTC
+### Start ZWESLSTC
 
 z/OS operator console command: ```S ZWESLSTC```
 
 
-## 7. Using the ZOWE Base Apps.
+## 2.5 Test Zowe from a Web Browser.
 
 The URL to open ZOWE from my browser is https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 where 
 * s0w1.dal-ebis.ihost.com is my hostname
@@ -266,7 +271,7 @@ TN3270 Emulator
 
 
 
-## 8. Subsequent Upgrades.
+## Subsequent Upgrades.
 
 The scope of this worked example was limited to a simple deployment. However, anybody running ZOWE will want to know how to upgrade it and how to avoid downtime.
 
