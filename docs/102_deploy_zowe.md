@@ -2,7 +2,11 @@
 
 # Step 2. Deploying Zowe
 
+Most sites will start from a position of having Db2 Tools deployed on z/OS (left hand side) and z/OSMF (right hand side).
+![stage1](/images/stage1.JPG)
 
+This page describes the steps to deploy Zowe.
+![stage2](/images/stage2.JPG)
 
 There are 4 options for installing the Zowe server-side component
 1. Convenience build (unpack a pax file)
