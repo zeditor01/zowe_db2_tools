@@ -8,7 +8,7 @@ The new paradigm augments the existing 3270 and JCL ways of working, allowing a 
 
 This repository is a worked example of implementing the Zowe-based Db2 tools in a simple environment to encourage Db2 z/OS sites to deploy the new facilities.
 
-# The Journey
+## The Journey
 The image below represents the journey that many DB2 z/OS sites will be making.
 
 ![thejourney](/images/thejourney.jpg)
@@ -32,6 +32,17 @@ There are two Graphical User Interfaces, aimed at different Db2 roles.
 * The Db2 tooling in Zowe environment is targetted firmly at the DBA role.
 * The Db2 tooling in the VSCODE environment is targetted firmly at the developer role.
 
+## Zowe Infrastructure
+The infrastructure needed to support this new unified experience is illustrated in the diagram below. 
+1. zowe is the foundation
+2. unified management server is installed into zowe (and starts automatically as part of zowe)
+3. db2 administration foundation and db2 automation expert are "experiences" that are installed into UMS
+4. db2 administration foundation is configured to invoke services from other configures products, like SQL Tuning Services of Db2 z/OS.
+
+![zoweinfra](/images/zoweinfra.png)
+
+
+## Videos
 Here are a couple of videos to give a brief insight into the end result. (coming soon)
 * [Navigating the Db2 Admin Foundation UI]()
 * [SQL Tuning Services through Zowe]()
@@ -42,34 +53,34 @@ Here are a couple of videos to give a brief insight into the end result. (coming
 The pages in this github repository provide a worked example for the 7 steps needed to add modern UI and integrations to the Db2 tools.
 
 
-## Step 1. Pre-Requisite Maintenance
+### Step 1. Pre-Requisite Maintenance
 
-[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/pre-requisite_maintenance.md) describes software maintenance for Db2 z/OS and DB2 Administration tool, required to support the Zowe Db2 tools.   
+[Pre-Requisite Maintenance](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/101_pre-requisites.md) describes software maintenance for Db2 z/OS and DB2 Administration tool, required to support the Zowe Db2 tools.   
 
-## Step 2. Deploying Zowe
+### Step 2. Deploying Zowe
 
-[Deploy_Zowe](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_zowe.md) is a simple worked example of downloading, installing and verifying Zowe.
+[Deploy_Zowe](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/102_deploy_zowe.md) is a simple worked example of downloading, installing and verifying Zowe.
 
 
-## Step 3. Deploying Unified Management Server
+### Step 3. Deploying Unified Management Server
 
-[Deploy_UMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_ums.md) is a simple worked example of downloading, installing and verifying Unified Management Server.
+[Deploy_UMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/103_deploy_ums.md) is a simple worked example of downloading, installing and verifying Unified Management Server.
 
-## Step 4. Deploying Db2 Administration Foundation
+### Step 4. Deploying Db2 Administration Foundation
 
-[Deploy_DAF](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_daf.md) is a simple worked example of downloading, installing and verifying Db2 Administration Foundation.
+[Deploy_DAF](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/104_deploy_daf.md) is a simple worked example of downloading, installing and verifying Db2 Administration Foundation.
 
-## Step 5 Deploying SQL Tuning Services
+### Step 5 Deploying SQL Tuning Services
 
-[Deploy_TMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_tms.md) is a simple worked example of downloading, installing and verifying Db2 z/OS SQL Tuning Services, or Query Workload Tuner.
+[Deploy_TMS](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/105_deploy_tms.md) is a simple worked example of downloading, installing and verifying Db2 z/OS SQL Tuning Services, or Query Workload Tuner.
 
-## Step 6. Deploying Db2 for z/OS Developer Extension in VSCODE
+### Step 6. Deploying Db2 for z/OS Developer Extension in VSCODE
 
-[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_db2devext.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
+[Deploy_vscode](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/106_deploy_db2devext.md) is a simple worked example of installing and verifying the Db2 for z/OS Developer Extension for VSCODE, and calling SQL Tuning Services from VSCODE.
 
-## Step 7. Deploying DB2 Automation Expert.
+### Step 7. Deploying DB2 Automation Expert.
 
-[Deploy_DAE](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/deploy_dae.md) is a simple worked example of downloading, installing and verifying Db2 Automation Experience.
+[Deploy_DAE](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/107_deploy_dae.md) is a simple worked example of downloading, installing and verifying Db2 Automation Experience.
 
 
  
