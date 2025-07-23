@@ -6,6 +6,11 @@ Most sites will start from a position of having Db2 Tools deployed on z/OS (left
 ![stage1](/images/zowestage1.jpg)
 
 This page describes the steps to deploy Zowe.
+1. install zowe code
+2. edit zowe.yaml to configure the zowe server
+3. deploy the zowe server (including creating keyring and certificates)
+4. start the zowe server
+   
 ![stage2](/images/zowestage2.jpg)
 
 There are 4 options for installing the Zowe server-side component
