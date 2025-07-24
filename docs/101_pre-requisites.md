@@ -46,5 +46,5 @@ A good example is the Storage tab for tablespaces and indexspaces. This depends 
 
 ## 3. Checking if these pre-requisites are installed
 
-This repository is structured to provide guidance to experienced system programmers. Some pages have a supplementary page which is aimed at novice readers who may seek more guidance on how to do some tasks.
-[This Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x101_pre-requisites_tasks.md) provides worked examples of how to check whether the pre-requisites are satisfied on a z/OS system.
+Experienced system programmers will know how to check these pre-requisited. 
+[This supplementary page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x101_pre-requisites_tasks.md) provides examples of checking the pre-requisites, if needed.
