@@ -12,7 +12,7 @@ Now we wish to Deploy the Unified Management Server and Db2 Administration Found
 4. start the zowe server (and likely debug initial UMS startup problems).
 6. test Zowe from a web browser.
    
-![stage2](/images/zowestage2.jpg)
+![stage3](/images/zowestage3.jpg)
 
 
 
