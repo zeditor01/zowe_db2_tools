@@ -54,11 +54,11 @@ UMS Zowe plug-ins require Program Control authorization. In order to tag the fil
 
 
 
-## 2.2 edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
+## 2.2 Edit the ZWEYAML parmlib member
 
 The heart of the configuration of Zowe was a YAML file (zowe.yaml) which tied together all the elements of the zowe configuration.
 
-Unified Management Server follows the same pattern. It also uses a set of 3 YAML files to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. These 3 YAML files are to be created as 3 members of a PDS. Editing this YAML file correctly is critical.
+Similarly, the heart of the configuration of Unified Management Server is it's YAML files. It uses a set of 3 YAML files (ZWEYAML, IZPDB2PM, IZPDAFPM) in the instance PARMLIB ( DAFUMS.IZP.I1.PARMLIB ) to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. These 3 YAML files are to be created as 3 members of a PDS. Editing this YAML file correctly is critical.
 
 Choose a naming standard for the datasets of the UMS instance. My SMPE installation created the UMS installation datasets under ```DAFUMS.IZP.**``` so I decided to create my instance datasets under the HLQ ```DAFUMS.IZP.I1.**```
 
