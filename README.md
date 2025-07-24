@@ -1,5 +1,5 @@
 # Zowe-based Db2 z/OS tools
-The purpose of this github repository is to share Worked examples for deploying IBM Db2 z/OS Tools inside the Zowe project.
+The purpose of this github repository is to share worked examples for deploying IBM Db2 z/OS Tools inside the Zowe project.
 
 IBM's Db2 tools have evolved to embrace a unified browser-based user interface, and integration of tooling services with RESTful APIs. 
 These innovations are based around the Zowe foundation.
