@@ -6,9 +6,11 @@ After installing Zowe, you will have a landscape like this.
 
 ![stage2](/images/zowestage2.jpg)
 
-Now we wish to Deploy the Unified Management Server and Db2 Administration Foundation into Zowe. 
+Now we wish to Deploy the Unified Management Server and Db2 Administration Foundation into Zowe, as illustrated below. 
 UMS is implemented as a Zowe server extension and plug-in, integrating seamlessly into the Zowe Application Framework and desktop
 UMS leverages the Zowe platform for UI, authentication, and REST services, appearing as a native component of the Zowe ecosystem.
+
+![stage3](/images/zowestage3.jpg)
 
 This page is a worked example of the following steps to deploy UMS into Zowe.
 1. install UMS and DAF code. (it makes sense to install DAF and UMS together).
@@ -17,7 +19,6 @@ This page is a worked example of the following steps to deploy UMS into Zowe.
 4. start the zowe server (and likely debug initial UMS startup problems).
 6. test Zowe from a web browser.
    
-![stage3](/images/zowestage3.jpg)
 
 ## Notes on using this page.
 This page is a simple worked example. It aims to communicate the key concepts and actions to experienced systems programmers. A more detailed audit trail of steps is available in [this supplementary page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x103_deploy_ums_tasks.md) 
