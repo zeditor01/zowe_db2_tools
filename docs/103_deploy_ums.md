@@ -25,9 +25,9 @@ This page is a simple worked example. It aims to communicate the key concepts an
 
 ## 2.1 install UMS and DAF code. (it makes sense to install DAF and UMS together).
 
-Order Unified Management Server and Db2 Admin Foundation together on ShopZ.
-![order_ums_daf](/images/order_ums_daf.jpg)
+The first task is to order Unified Management Server and Db2 Admin Foundation together on ShopZ. The PIDs to order are shown below.
 
+![order_ums_daf](/images/order_ums_daf.jpg)
 
 
 Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up with the following datasets after the SMPE installation.
@@ -41,10 +41,12 @@ Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up 
 ![dafums_datasets](/images/dafums_datasets.jpg)
 
 
-You will be required to permanently mount two ZFS filesystems as follows.
+The PSI workflows will create the USS paths and dynamically mount them. You will be required to permanently mount two ZFS filesystems as follows.
 
 * UMS provides a ZFS called DAFUMS.OMVS.SIZPROOT - to mounted at /usr/lpp/IBM/izp/v1r2m0/bin
 * DAF provides a ZFS called DAFUMS.OMVS.SAFXROOT - mounted at /usr/lpp/IBM/afx/v1r2m0/bin
+
+![izpafx_mounts](/images/izpafx_mounts.jpg)
 
 UMS Zowe plug-ins require Program Control authorization. In order to tag the files with this bit, the SMP/E install user requires BPX.FILEATTR.PROGCTL permission on the system, which can be achieved with the following command from a USS shell.
 
