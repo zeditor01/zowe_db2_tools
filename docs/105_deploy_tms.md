@@ -18,6 +18,13 @@ Contents
 
 ## 5.1 Two options to get SQL Tuning Services
 
+Order Database Services Expansion Pack from Shopz
+![order_tms](/images/order_tms.jpg)
+
+Order Query Workload Tuner from Shopz
+![order_qwt](/images/order_qwt.jpg)
+
+
 ## 5.2 ShopZ order of Query Workload Tuner
 
 ## 5.3 Deploy Query Workload Tuner
