@@ -53,9 +53,131 @@ UMS Zowe plug-ins require Program Control authorization. In order to tag the fil
 
 The heart of the configuration of Zowe was a YAML file (zowe.yaml) which tied together all the elements of the zowe configuration.
 
-Unified Management Server follows the same pattern. It also uses a YAML file to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. Editing this YAML file correctly is critical.
+Unified Management Server follows the same pattern. It also uses a set of 3 YAML files to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. These 3 YAML files are to be created as 3 members of a PDS. Editing this YAML file correctly is critical.
 
+Choose a naming standard for the datasets of the UMS instance. My SMPE installation created the UMS installation datasets under ```DAFUMS.IZP.**``` so I decided to create my instance datasets under the HLQ ```DAFUMS.IZP.I1.**```
 
+Create a customisated copy of the installation SAMPLLIB ```DAFUMS.IZP.SIZPSAMP``` at ```DAFUMS.IZP.I1.SIZPSAMP``` and copy all 6 members over. (IZPALOPL, IZPCPYML, IZPCPYM2, IZPGENER, IZPMIGRA, IZPSYNCY ).
+
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... which Allocates DAFUMS.IZP.I1.PARMLIB  
+
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... Creates the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
+
+Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
+
+```
+000027     experiences:                   
+000028       - /usr/lpp/IBM/afx/v1r2m0/bin
+
+000033     jobCard:                                               
+000034       - //IZPCUST1 JOB (FB3),'UMSCUST',CLASS=A,MSGCLASS=H, 
+000035       - //       NOTIFY=&SYSUID,REGION=0M,TIME=1440        
+000036       - //*                                                
+
+000042     runtimeDirectory: "/usr/lpp/IBM/izp/v1r2m0/bin" 
+
+000050     workspaceDirectory: "/global/ums"
+
+000061     security:   
+...
+000066       useSAFOnly: true   
+...
+000080         defaultAuthenticationMechanism: PASSWORD 
+...
+000086         # defaultDbaUserCertificateLabel:     
+000094         # defaultDbaUserCertificateLocation:  
+000103         # defaultDbaUserCertificateKeystoreType:    
+...
+000109       profileQualifier:                                               
+000110       #                                                               
+000111       # Encryption using ICSF PKCS#11 services.                       
+000112       #                                                               
+000113       pkcs11:                                                         
+000114         #                                                             
+000115         # The user name of dba that goes with the encrypted password. 
+000116         #                                                             
+000117         dbaUser: IZPDBA                                               
+000118         #                                                             
+000119         # The pkcs#11 token where the secret key material is stored.  
+000120         #                                                             
+000121         token: IZPTOK                                                 
+000122         #                                                             
+000123         # Path to pkcs#11 provider module.                            
+000124         #                                                             
+000125         library: /usr/lpp/pkcs11/lib/csnpca64.so                      
+...
+000129       certificate:                                                                                                 
+000134         allowSelfSigned: true                                        
+...                                                        
+000142         truststore:                                                                                                   
+000151           location: "////ZWESVUSR/ZoweKeyring"                       
+000159           type: "JCERACFKS" 
+...
+000163         keystore:                                              
+000170           location: "////ZWESVUSR/ZoweKeyring"                       
+000178           type: "JCERACFKS"                                                                              
+000182           alias: "zowes0w1"   
+...
+000187       profilePrefix:             
+000188         # Super Role             
+000189         super: IZP.SUPER         
+000190         # Administrator Role     
+000191         admin: IZP.ADMIN         
+...                        
+000200       surrogateUser:             
+000201         # Super Role             
+000202         super: IZPSRGSP          
+000203         # Administrator Role     
+000204         admin: IZPSRGAD          
+...                   
+000208       surrogateGroup: IZPSRGRP   
+...
+000213     server:                            
+000221       tlsVersionList: TLSv1.2,TLSv1.3  
+000228       authType: STANDARD_JWT           
+...
+000232       port:           
+000233         http: 12023   
+000234         agent: 3444   
+000235         gremlin: 8182                                  
+...
+000284       allSysnames: "S0W1"     
+...
+000296     dataset:                                                  
+000300       runtimeHlq: "DAFUMS.IZP"                                
+000305       hlq: "DAFUMS.IZP.I1"                                    
+000310       parmlib: "DAFUMS.IZP.I1.PARMLIB"                         
+000315       jcllib: "DAFUMS.IZP.I1.JCLLIB"                           
+...
+000319       loadLibrary:               
+000320         db2: "DSND10.SDSNLOAD"   
+000326         # izp:                   
+...
+000331       dbaEncryption: "DAFUMS.IZP.I1.DBA.ENCRYPT"      
+000335       userList: "DAFUMS.IZP.I1.USERLIST"              
+000340       teamList: "DAFUMS.IZP.I1.TEAMLIST"              
+...
+000345     toolsDiscovery:                                              
+000349       enabled: true                                              
+000360       discoverySearchPaths: []                                   
+000361     #                                                            
+000362     # Zowe app-specific parameters                               
+000363     #                                                            
+000364     zowe:                                                        
+000365       job:                                                       
+000366         #                                                        
+000367         # Suffix for Java program which will be run by UMS.  Defa
+000368         #                                                        
+000369         suffix: IZP                                              
+000370 zowe:                                                            
+000371   # These zowe items are required by the IZP setup.  Do not edit.
+000372   setup:                                                         
+000373     zis:                                                         
+000374      parmlib:                                                    
+000375        keys:                                                     
+000376          IZP.ZSSP.REG: list                                      
+000377   useConfigmgr: true                                       
+```
 
 ## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
