@@ -6,7 +6,9 @@ These innovations are based around the Zowe foundation.
 There is no sudden migration here.
 The new paradigm augments the existing 3270 and JCL ways of working, allowing a choice of tooling interface.
 
-This repository is a worked example of implementing the Zowe-based Db2 tools in a simple environment to encourage Db2 z/OS sites to deploy the new facilities.
+The IBM knowledge centers provide all the regularly-maintained official documentation on how to deploy the Zowe-based Db2 tools. 
+This repository aims to help by sharing an end-to-end simple-scenario worked example, which may be helpful for getting started.
+
 
 ## The Journey
 The image below represents the journey that many DB2 z/OS sites will be making.
