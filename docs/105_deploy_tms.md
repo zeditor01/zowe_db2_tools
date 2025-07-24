@@ -33,6 +33,11 @@ This worked example using Query Workload tuner.
 
 ## 5.2 Install Query Workload Tuner
 This is a standard portable software instance installation, which will not be covered in the main page. 
+
+This repository is structured to provide guidance to experienced system programmers. Some pages have a supplementary page which is aimed at novice readers who may seek more guidance on how to do some tasks.
+[This Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x105_deploy_tms_tasks.md) provides worked examples of how to check whether the pre-requisites are satisfied on a z/OS system.
+
+
 ## 5.3 Deploy Query Workload Tuner
 
 ## 5.4 Operating the SQL Tuning Server
