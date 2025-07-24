@@ -35,8 +35,7 @@ There are two Graphical User Interfaces, aimed at different Db2 roles.
 The infrastructure needed to support this new unified experience is illustrated in the diagram below. 
 1. zowe is the foundation
 2. unified management server is installed into zowe (and starts automatically as part of zowe)
-3. db2 administration foundation and db2 automation expert are "experiences" that are installed into UMS
-4. db2 administration foundation is configured to invoke services from other configures products, like SQL Tuning Services of Db2 z/OS.
+3. db2 administration foundation (an "experience" running inside UMS) provides integration with capabilities from other services (e.g. SQL Tuning Services of Db2 z/OS.)
 
 ![zoweinfra](/images/zoweinfra.png)
 
