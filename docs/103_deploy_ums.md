@@ -197,14 +197,448 @@ Once you are satisfied that the ZWEYAML is correctly configured, it can be used 
 
 ## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
+Customize and Run DAFUMS.IZP.I1.SIZPSAMP(IZPGENER) to generate the customised workflow jobs.
+
+IZPGENER results in adding ENVIRON and JCLLIB libraries
+```
+'DAFUMS.IZP.I1.ENVIRON' 
+'DAFUMS.IZP.I1.JCLLIB'  
+'DAFUMS.IZP.I1.PARMLIB' 
+'DAFUMS.IZP.I1.SIZPSAMP'
+```
+
+Dataset 'DAFUMS.IZP.I1.JCLLIB' contains all the JCL's that may ( or may not ) need to be run. You need to refer to [this page](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=references-list-jcllib-members) to decide which jobs need to be run for this instance.
+
+In this worked example, the sequence of jobs that I chose to run were as follows.
+
+```
+IZPA1.... N/A - allocates TEAMLIST
+IZPA1V... verify  
+IZPA2.... N/A - allocates USERLIST    
+IZPA2V... verify    
+IZPA3.... YES - allocates IZP.CUST.DBA.ENCRYPT   
+IZPA3V... verify  
+IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly.  
+IZPB0VR.. verify  
+IZPB1R... YES - Create IZP class and add to the CDT.  
+IZPB1VR.. verify  
+IZPB2R... YES - Add security role profiles to the IZP class.   
+IZPB2VR.. verify  
+IZPB3R... N/A - Create generic profiles to secure userList and teamList data sets. This is not required if useSAFOnly=true.  
+IZPB3VR.. verify  
+IZPB4R... YES - Create RACF IZP resource profiles to define the UMS users and their roles.  
+IZPB4VR.. verify  
+IZPC1R... N/A - Add surrogate users to impersonate when accessing the userList and teamList data sets during runtime. This is not required if useSAFOnly=true.  
+IZPC1VR.. verify  
+IZPC2R... N/A - Grant surrogate user access to the userList and teamList profiles. This is not required if useSAFOnly=true.  
+IZPC2VR.. verify  
+IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
+IZPD1VR.. verify  
+IZPD2R... N/A - Grant system programmer and started task access to PKCS #11 resources. 
+IZPD2VR.. verify  
+IZPD3R... N/A - Create the PKCS #11 token for UMS. This is not required if you are  
+IZPD3VR.. verify  
+IZPD4R... YES - Add a new user to serve as the DBA user ID.  
+IZPD4VR.. verify  
+IZPD5R... YES - Connect the DBA user ID to the IZUUSER group for z/OSMF.  
+IZPD5VR.. verify  
+IZPD6R... YES - Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.   
+IZPD6VR.. verify  
+IZPD7R... YES - Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.   
+IZPD7VR.. verify  
+IZPSTEPL. YES - concatenate datasets in PROCLIB member
+IZPUSRMD. N/A - If useSafOnly is set to true or you are migrating from UMS 1.1, do not submit the IZPUSRMD JCL.
+izp-encrypt-dba.sh
+IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+```
+
+
+5.4.7 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
+IZPA3
+IZPA3V
+
+5.4.8 Create IZP class and add to the CDT. 
+IZPB1R... YES - Create IZP class and add to the CDT. (not convinced it worked with RALT commands all following the RDEF, without a refresh)
+IZPB1RV... YES - OK
+IZPB1RF... FIX - re-run RALTs - to be sure to be sure
+
+5.4.9 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
+IZPB2R... YES - Add security role profiles to the IZP class.  
+IZPB2Rv
+
+5.4.10 Create RACF IZP resource profiles to define the UMS users and their roles.  
+IZPB4R
+IZPB4RV
+
+5.4.11 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
+IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
+IZPD1RV
+
+5.4.12 Grant system programmer and started task access to PKCS #11 resources.
+IZPD2R... Grant system programmer and started task access to PKCS #11 resources. 
+IZPD2VR.. verify  
+
+5.4.13 Create the PKCS #11 token for UMS. This is not required if you are  
+IZPD3R... Create the PKCS #11 token for UMS. This is not required if you are  
+IZPD3VR.. verify  
+
+5.4.14 Add a new user to serve as the DBA user ID.  (IZPDBA)
+IZPD4R - yes with errors... you can ignore a non-zero return code.
+IZPD4RV - no records found in zSecure
+
+5.4.15 Connect IZPDBA to the IZUUSER group for z/OSMF
+IZPD5R  
+IZPD5RV
+
+READY                         
+CONNECT IZPDBA GROUP(IZUUSER) 
+READY                         
+END                           
+
+5.4.16 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
+IZPD6R
+IZPD6RV
+
+n/a
+Note: If the APPL class is active and OMVSAPPL is defined, submit the job IZPD6R to permit IZPSRGSP, IZPSRGAD, DBA user ID, UMS user, and the Zowe STC user (ZWESLSTC) read access on the OMVSAPPL resource. 
+RLIST APPL OMVSAPPL
+ICH13003I OMVSAPPL NOT FOUND
+***                         
+
+
+5.4.117 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
+IZPD7R
+IZPD7RV
+
+
+5.4.18 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+
+ SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
+ COMMAND INPUT ===>                                            SCROLL ===> CSR  
+********************************* TOP OF DATA **********************************
+System Information:                                                             
+z/OS S0W1 01.00 03 1090                                                         
+ZOAU Version:                                                                   
+2025/03/13 21:08:08 CUT v1.3.5.0 bcb459b6 7509 PH64192 1385 36baca08            
+Python Version:                                                                 
+Python 3.12.3                                                                   
+Java Version:                                                                   
+java version "11.0.24" 2024-07-16                                               
+IBM Semeru Runtime Certified Edition for z/OS 11.0.24.1 (build 11.0.24+8)       
+IBM J9 VM 11.0.24.1 (build z/OS-Release-11.0.24.1-b01, JRE 11 z/OS s390x-64-Bit 
+OpenJ9   - 0f87f4c7844                                                          
+OMR      - 55ddfd47ab0                                                          
+IBM      - 3c87141                                                              
+JCL      - 5f768fcf827 based on jdk-11.0.24+8)                                  
+IZPPI0079I - Start of izp-concatenate-proclib.sh                                
+IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9             
+IZPPI0092I - Updated USER.Z31C.PROCLIB(ZWESASTC) with STEPLIB DSND10.SDSNLOAD   
+IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0                   
+******************************** BOTTOM OF DATA ********************************
+
+
+5.4.19
+
+IZPUSRMD. N/A - If useSafOnly is set to true or you are migrating from UMS 1.1, do not submit the IZPUSRMD JCL.
+izp-encrypt-dba.sh
+
+5.4.20 Encrypt DBA credentials.
+
+This step failed because I hadn't run jobs IZPD2R and IZPD3R.
+
+izp-encrypt-dba.sh encrypts IZPDBA user's password
+
+As an install user, run izp-encrypt-dba.sh from your UMS installation location. You need to provide the high-level qualifier of the environment data set. This is the YAML variable listed as {components.izp.dataset.hlq}.
+
+{components.izp.runtimeDirectory}/ums/opt/bin/izp-encrypt-dba.sh {components.izp.dataset.hlq}
+
+/usr/lpp/IBM/izp/v1r2m0/bin
+DAFUMS.IZP.I1
+
+Replace {components.izp.runtimeDirectory} and {components.izp.dataset.hlq}, on your command line, with the values of these parameters in the ZWEYAML member.
+The izp-encrypt-dba.sh shell script populates the {components.izp.dataset.dbaEncryption} data set used to store the encrypted DBA credential. 
+It is not recommended to use OMVS to complete this step because the password is visible on the screen in plain text. Use SSH to perform this step.
+
+/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
+
+For more information, refer to Updating UMS DBA user credentials.
+
+
+/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
+IZPPI0079I - Start of izp-encrypt-dba.sh
+IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
+IZP Credential Encryption Utility
+Using PKCS #11 token label: IZPTOK
+Using path to PKCS #11 library file: /usr/lpp/pkcs11/lib/csnpca64.so
+IZPSC0003E - Fail to create dba configuration, reason 'Invalid Token Label : IZPTOK'.Encryption Failed
+IZPPI0202E - Could not encrypt credentials. Refer to the log file: /tmp/izp-n-20250704211308.log.
+IZPPI0080I - End of izp-encrypt-dba.sh. Return code 1
+
+===
+
+run jobs IZPD2R and IZPD3R.
+Then retry Encrypt DBA credentials.
+When prompted for IZPDBA password - enter l0nep1ne
+
+IBMUSER:/u/ibmuser: >/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
+IZPPI0079I - Start of izp-encrypt-dba.sh
+IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
+IZP Credential Encryption Utility
+Using PKCS #11 token label: IZPTOK
+Using path to PKCS #11 library file: /usr/lpp/pkcs11/lib/csnpca64.so
+Using database administrator username: IZPDBA
+Enter the password for the database administrator:
+
+Reenter the password:
+
+Supplied Credentials encrypted
+IZPPI0080I - End of izp-encrypt-dba.sh. Return code 0
+IBMUSER:/u/ibmuser: >
+
+
+
+>>>>>>>>>>>>>> EXTRA
+Create IZPDBA based on IBMUSER ( to get SYSADM etc... )
+Set a password for IZPDBA (adcdmst)
+logged on tso - changed pwd to COCACOLA
+deleted DAFUMS.IZP.I1.DBA.ENCRYPT
+re-allocated DAFUMS.IZP.I1.DBA.ENCRYPT
+Re-Ran Encrypt DBA credentials.
+
+
+
+
+
+IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+should find the base UMS plugins
+
+Job4398 - 
+ SDSF OUTPUT DISPLAY IZPCUST1 JOB04398  DSID   102 LINE 0       COLS 02- 81     
+ COMMAND INPUT ===>                                            SCROLL ===> CSR  
+********************************* TOP OF DATA **********************************
+System Information:                                                             
+z/OS S0W1 01.00 03 1090                                                         
+ZOAU Version:                                                                   
+2025/03/13 21:08:08 CUT v1.3.5.0 bcb459b6 7509 PH64192 1385 36baca08            
+Python Version:                                                                 
+Python 3.12.3                                                                   
+Java Version:                                                                   
+java version "11.0.24" 2024-07-16                                               
+IBM Semeru Runtime Certified Edition for z/OS 11.0.24.1 (build 11.0.24+8)       
+IBM J9 VM 11.0.24.1 (build z/OS-Release-11.0.24.1-b01, JRE 11 z/OS s390x-64-Bit 
+OpenJ9   - 0f87f4c7844                                                          
+OMR      - 55ddfd47ab0                                                          
+IBM      - 3c87141                                                              
+JCL      - 5f768fcf827 based on jdk-11.0.24+8)                                  
+IZPPI0079I - Start of izp-install-plugins.sh.                                   
+IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9             
+IZPPI0122I - Installing IZP as a Zowe component, using manifest /usr/lpp/IBM/izp
+             Target Zowe APF-authorized dataset ZWE200.CUST.ZWESAPL.            
+             IZP workspace /global/ums.                                         
+/tmp/.zweenv-3146/zwe-parmlib-8155 -> DAFUMS.IZP.I1.PARMLIB(ZWEYAML): text      
+Temporary directory '/tmp/.zweenv-3146' created.                                
+Zowe will remove it on success, but if zwe exits with a non-zero code manual cle
+bos extend currSize=0x0 dataSize=0x178a chunk=0x1000 extend=0x178a              
+Installing file or folder=/usr/lpp/IBM/izp/v1r2m0/bin                           
+Install bin                                                                     
+Process ums/opt/bin/izp-install.sh defined in manifest commands.install:        
+2025-07-05 02:46:25 <ZWELS:50398022> IBMUSER INFO (zwe-components-install-proces
+                                                                                
+Successfully installed ZIS plugin: zos-newton-db2ifi                            
+Successfully installed ZIS plugin: zos-newton-discovery                         
+Successfully installed ZIS plugin: zos-newton-jobs                              
+Successfully installed ZIS plugin: zos-newton-registry                          
+Successfully installed ZIS plugin: zos-newton-security                          
+Successfully installed ZIS plugin: zss-data-provider                            
+Successfully installed ZIS plugin: cidb                                         
+Successfully installed ZIS plugin: ums-security                                 
+Successfully installed ZIS plugin: zos-newton-daj                               
+Successfully installed ZIS plugin: hlv-discovery                                
+- update zowe config /tmp/.zweenv-3146/.zowe-merged.yaml, key: "components.izp.e
+  * Success                                                                     
+Writing temp file for PARMLIB update. Command= cp -v "/tmp/.zweenv-3146/zwe-parm
+bos extend currSize=0x0 dataSize=0x178a chunk=0x1000 extend=0x178a              
+IZPPI0080I - End of izp-install-plugins.sh. Return code 0                       
+******************************** BOTTOM OF DATA ********************************
+
+
+
+
+IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+should find DAF
+
+ SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
+ COMMAND INPUT ===>                                            SCROLL ===> CSR  
+********************************* TOP OF DATA **********************************
+System Information:                                                             
+z/OS S0W1 01.00 03 1090                                                         
+ZOAU Version:                                                                   
+2025/03/13 21:08:08 CUT v1.3.5.0 bcb459b6 7509 PH64192 1385 36baca08            
+Python Version:                                                                 
+Python 3.12.3                                                                   
+Java Version:                                                                   
+java version "11.0.24" 2024-07-16                                               
+IBM Semeru Runtime Certified Edition for z/OS 11.0.24.1 (build 11.0.24+8)       
+IBM J9 VM 11.0.24.1 (build z/OS-Release-11.0.24.1-b01, JRE 11 z/OS s390x-64-Bit 
+OpenJ9   - 0f87f4c7844                                                          
+OMR      - 55ddfd47ab0                                                          
+IBM      - 3c87141                                                              
+JCL      - 5f768fcf827 based on jdk-11.0.24+8)                                  
+IZPPI0079I - Start of izp-cp-exp.sh                                             
+IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9             
+IZPPI0121I - Updating /tmp/izp-merge-83952462 with new elements from /usr/lpp/IB
+IZPPI0031I - File copy status: OK - IZPDB2PM                                    
+IZPPI0121I - Updating /tmp/izp-merge-83952462 with new elements from /usr/lpp/IB
+IZPPI0031I - File copy status: OK - IZPDAFPM                                    
+IZPPI0049I - Experience post-installation status: /usr/lpp/IBM/afx/v1r2m0/bin/ad
+alloc da('DAFUMS.IZP.I1.SAFXDBRM') dsorg(po) dsntype(library) tracks space(10,5)
+alloc da('DAFUMS.IZP.I1.SAFXLLIB') dsorg(po) dsntype(library) tracks space(100,1
+alloc da('DAFUMS.IZP.I1.SAFXSAMP') dsorg(po) dsntype(library) tracks space(10,5)
+IZPPI0049I - Experience post-installation status: /usr/lpp/IBM/afx/v1r2m0/bin/ad
+IZPPI0080I - End of izp-cp-exp.sh. Return code 0                                
+******************************** BOTTOM OF DATA ********************************
+
+
+
 
 
 
 ## 2.4 start the zowe server (and likely debug initial UMS startup problems).
 
 
+Edit the ZOWE Started Task - USER.Z31C.PROCLIB(ZWESLSTC)
+
+//ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'   
+//ZWELNCH  EXEC PGM=ZWELNCH,REGION=&RGN,TIME=NOLIMIT,                  
+// PARM='ENVAR(_CEE_ENVFILE=DD:STDENV),POSIX(ON)/&HAINST.'             
+//STEPLIB  DD   DSNAME=ZWE200.CUST.SZWEAUTH,                           
+//             DISP=SHR                                                
+//SYSIN    DD  DUMMY                                                   
+//SYSPRINT DD  SYSOUT=*,LRECL=1600                                     
+//SYSERR   DD  SYSOUT=*                                                
+//********************************************************************/
+//STDENV   DD  *                                
+_CEE_ENVFILE_CONTINUATION=\                     
+_CEE_RUNOPTS=HEAPPOOLS(OFF),HEAPPOOLS64(OFF)    
+_EDC_UMASK_DFLT=0002                            
+CONFIG=PARMLIB(DAFUMS.IZP.I1.PARMLIB(ZWEYAML))\ 
+:FILE(/apps/zowe/v20/zowe.yaml)                 
+/*                                              
+
+
+Start ZOWE
+S ZWESISTC,REUSASID=YES
+S ZWESLSTC
+
+https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
+
+
+
 
 ## 2.5 test Zowe from a web browser.
+
+
+Session Renewal Error
+05/07/2025, 13:42:23
+Session could not be renewed. Logout will occur unless renewed. Click here to retry.
+
+Open UMS ...
+Error Request failed with status code 401
+
+
+Eventually I found where the UMS logs were. ( /apps/zowe/v20/log or SDSF ZWESLSTC job output )
+ZOWE logs and UMS logs are shared.
+
+These logs - at the very end when I logon to ZOWE show an error
+<ZWED:83952169> ZWESVUSR WARN (com.rs.auth.db2Auth,db2Auth.js:153) UMS login: connect ECONNREFUSED 192.168.1.171:12023
+
+ECONNREFUSED means a problem with TCPIP address/port or firewall usually.
+Or perhaps something as basic as UMS not started.
+
+Hidden within the zowe/ums output is confirmation that UMS did not start
+IZPPI0205E - Validation unsuccessful, it returned code 4 for DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
+<ZWELNCH:83951980> ZWESVUSR ERROR ZWEL0038E failed to restart component izp, max retries reached
+
+
+So, given that the reason for UMS not starting looks likely that DAFUMS.IZP.I1.PARMLIB(IZPDB2PM) prevented successful validation,
+I edited it, and entered the HLQs for IZP and AFX/ADM
+
+
+--> Conclusion: can't add a new experience until it is properly configured
+Configure more advanced DB2 Admin Tool experiences. ( LIST THEM )
+Edit the additional YAML files to locate the DB2AOC libraries
+IZPDB2PM
+IZPDAFPM
+
+
+
+
+6. DAF
+
+Open UMS.
+Navigate to DAF.
+
+Discover DALLASD
+
+Register DALLASD
+>>> Lots of errors.
+>>> SSL connection 5046 - failed - need to setup trust from ZOWE/UMS to Db2 ???
+>>> non-secure 5045 - failed - no SYSADM grant ; DSNTEP2 DDL connection failure ( APPLCOMPATs etc... )
+>>> Rebind Db2 Connect Packages ; Rebind DSNTEP2
+>>> Still failing... try re-IPL and fresh system
+>>> Aha - when registering the DBDG subsystem, plan name for DSNTEP2 is DSNTEP13
+
+Basic Catalog Navigation.
+All food
+
+Gen DDL - fails.
+SQLCODE -444 : Procedure DBDGDDL not found.
+Funny - Db2 Admin tool DDL GEN invoked DBDGDDL in DBGENV1 without fail.
+But DAF does the same thing - and Load Module Not found
+
+I was trying with usig Db2 Admin Tool "HLQ IZP_DB2_ADB_PREFIX: SADB" in DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
+But I notice there are two Procedures in SYSROUTINES - One bound in 2022, the other bound today.
+The DAF version of DDL gen will only generate DDL for a single object at a time.
+Lets see if that will work ?
+
+DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
+000153 # Required Parameters                                                   
+000154 # High-level qualifier (HLQ) and prefix for user data sets created and  
+000155 # written to during various JCL Jobs execution. Eg, using the sample val
+000156 # registring a Db2 subsystem will write to HLQ.IZP.DSN.SIZPTLIB         
+000157 # It is recommended to use the UMS read/write HLQ specified by          
+000158 # components.izp.dataset.hlq in ZWEYAML.                                
+000159 # Sample value: HLQ.IZP.DSN                                             
+000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                          
+000161 # Sample value (recommended): SIZP                                      
+000162 IZP_DB2_USR_PREFIX: SIZP                                                
+000163                                                                         
+000164 # Required Parameters                                                   
+000165 # High-level qualifier (HLQ) and prefix for IBM Db2 Administration Tool 
+000166 # related data sets to be concatenated in various generated JCL.        
+000167 # If using IBM Db2 Administration Tool for z/OS, specify HLQ where      
+000168 # ADB functionality was SMPE installed.                                 
+000169 # Otherwise enter the UMS read/write HLQ specified by                   
+000170 # components.izp.dataset.hlq in ZWEYAML.                                
+000171 # Sample value: HLQ.ADB.DSN                                             
+000172 # Sample value: HLQ.IZP.DSN                                             
+000173 IZP_DB2_ADB_HLQ: ADBD10                                                 
+000174 # Sample value (if using IBM Admin Tool): SADB                          
+000175 # Sample value (otherwise, using Admin Foundation files) : SAFX         
+000176 IZP_DB2_ADB_PREFIX: SAFX                                                
+
+recycle ZOWE
+Retest
+
+
+Config Steps
+https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-installing-db2-administration-foundation
+
+Create a WLM environment by using the template in JCLLIB(WLMPROC) that points to the load libraries in <HLQ>.SIZPLLIB.
+
+
+
 
 
 
