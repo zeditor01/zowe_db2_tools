@@ -8,6 +8,8 @@ This page will cover the deployment of SQL Tuning Services Liberty Server, and A
 ![stage3a](/images/zowe_tms.jpg)
 
 
+This worked example is NOT intended as a replacement for the installation instructions in the [Db2 for z/OS Knowledge Center](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-installing). Think of it as a worked example that should be helpful in conjucntion with the UMS Knowledge Center.
+
 Contents
 1. Two options to get SQL Tuning Services
 2. Install Query Workload Tuner
