@@ -17,6 +17,9 @@ Contents
 
 
 ## 5.1 Two options to get SQL Tuning Services
+IBM provides a base capability for SQL Tuning as part of Db2 z/OS V13. This is a no charge feature, but it (Database Services Expansion Pack) must be ordered from ShopZ. It includes Visual Explain, Statistics Advisor and the ability to Capture the Query environment for IBM Support cases.
+
+IBM offers an optional licensed tool (Query Workload Tuner) with a number of advanced tuning capabilities. ( advisors for indexes and access paths, comparison of access paths, virtual index analyzer, entire SQL workload tuning and more). A full comparision of features is documented [here](https://www.ibm.com/docs/en/db2-for-zos/13.0.0?topic=services-overview)
 
 Order Database Services Expansion Pack from Shopz
 ![order_tms](/images/order_tms.jpg)
