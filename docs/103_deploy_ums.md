@@ -63,7 +63,21 @@ Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... which Allocates DAFUMS.IZP.
 
 Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... Creates the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
 
-Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
+Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML). This is a very long and verbose dataset with incredibly strict syntax standards. An excerpt for the lines that I edited in included below, with line-numbered notes to explain the logic for my edits.
+
+* line 28. specifies the USS path for any installed experiences. We are installing the Db2 Admin Foundation, so add the path.
+* Lines 34 - 36. allows you to provide a Jon card for all the deployment jobs that will be generated.
+* Line 42. specifies the USS path for UMS itself.
+* Line 50. specifies the path of the workspace directory, which needs 755 permissions
+* Line 66. specifies that UMS will always use the SAF (eg: RACF) for authentication. (Earlier versions of UMS allowed UMS-based authentication).
+* Line 80. specifies that PASSWORD authentication will be used
+* Lines 86, 94, 103 are left blank because we will use RACF keyrings rather that USS keystores to hold our certificates
+* Lines 109 - 125. specifies the "DBA user" for UMS, and the name of the authentication token it will use.
+* Lines 129 - 182. specifies the Keyrings and certificates that will be used by UMS.
+* Lines 187 - 208. specifies the roles that will be used with the IZP RACF class.
+* Lines 213 - 284. specifies the network and TLS identities
+* Lines 296 - 340. specifies the locations of UMS and DB2 datasets
+* Lines 345 - 377. specifies the tools discovery parameters, that we will come back to later.
 
 ```
 000027     experiences:                   
@@ -178,6 +192,8 @@ Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
 000376          IZP.ZSSP.REG: list                                      
 000377   useConfigmgr: true                                       
 ```
+
+Once you are satisfied that the ZWEYAML is correctly configured, it can be used to generate all the installation workflow jobs with the desired customisations.
 
 ## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
