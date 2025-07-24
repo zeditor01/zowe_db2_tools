@@ -7,7 +7,9 @@ There is no sudden migration here.
 The new paradigm augments the existing 3270 and JCL ways of working, allowing a choice of tooling interface.
 
 The [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0) provides all the regularly-maintained official documentation on how to deploy the Zowe-based Db2 tools. 
-This repository aims to help by sharing an end-to-end simple-scenario worked example, which may be helpful for getting started.
+This repository aims to help by sharing an end-to-end simple-scenario worked example, which may be helpful for getting started. 
+The primary pages are aimed at experienced systems programmers who need a simple route map though the Zowe infrastructure setup. 
+Supplementary pages have been written to help guide less experienced professionals with some of the tasks.
 
 
 ## The Journey
