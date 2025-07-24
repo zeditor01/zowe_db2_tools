@@ -28,8 +28,9 @@ Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up 
 * The DAFUMS.AFX.** datasets are the target and distribution libraries for Db2 Administration Foundation.
 * The DAFUMS.CPAC.** and DAFUMS.SMPE.** datasets are the SMPE assets.
 * The DAFUMS.IZP.** datasets are the target and distribution libraries for Unified Management Server.
-* The DAFUMS.IZP.I1.** datasets are datasets supporting an instance of UMS.
+* The DAFUMS.IZP.I1.** datasets are datasets supporting an instance of UMS. (created by post-SMPE installation workflows covered later)
 * The DAFUMS.OMVS.** datasets are the ZFS filesystems for Unified Management Server and Db2 Administration Foundation. 
+
 
 ![dafums_datasets](/images/dafums_datasets.jpg)
 
