@@ -14,8 +14,11 @@ Now we wish to Deploy the Unified Management Server and Db2 Administration Found
    
 ![stage3](/images/zowestage3.jpg)
 
+## Notes on using this page.
+
 This worked example is NOT intended as a replacement for the installation instructions in the [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-installing-unified-management). Think of it as a worked example that should be helpful in conjucntion with the UMS Knowledge Center.
 
+The main pages of this repository are written to provide guidance to experienced system programmers who don't need to be told how to perform a PSI install. If you want an expanded version of this page covering the basic systems programmer tasks, please switch to [This Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x103_deploy_ums_tasks.md) 
 
 ## 2.1 install UMS and DAF code. (it makes sense to install DAF and UMS together).
 
@@ -44,9 +47,6 @@ UMS Zowe plug-ins require Program Control authorization. In order to tag the fil
 
 ```IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >extattr +p */zssServer/lib/*```
 
-
-
-The main pages of this repository are written to provide guidance to experienced system programmers who don't need to be told how to perform a PSI install. If you want an expanded version of this page covering the basic systems programmer tasks, please switch to [This Page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x103_deploy_ums_tasks.md) 
 
 
 ## 2.2 edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
