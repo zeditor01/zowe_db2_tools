@@ -258,15 +258,19 @@ The URL to open ZOWE from my browser is https://s0w1.dal-ebis.ihost.com:7554/zlu
 Firing up the Apps should be self-explanatory. Screenshots below
 
 MVS Explorer
+
 ![MVS](/images/MVS.JPG)
 
 JES Explorer
+
 ![MVS](/images/JES.JPG)
 
 USS Explorer
+
 ![USS](/images/USS.JPG)
 
 TN3270 Emulator
+
 ![TN3270](/images/TN3270.JPG)
 
 
@@ -277,7 +281,5 @@ The scope of this worked example was limited to a simple deployment. However, an
 
 The short answer is to do a fresh ZOWE install, and switch traffic when ready.
 
-This subject is addressed by the ZOWE documentation.
-
-[upgrade zowe with zero downtime](https://docs.zowe.org/stable/user-guide/api-mediation/upgrade-zowe-no-downtime/)
+This subject is addressed by the ZOWE documentation: [upgrade zowe with zero downtime](https://docs.zowe.org/stable/user-guide/api-mediation/upgrade-zowe-no-downtime/)
 
