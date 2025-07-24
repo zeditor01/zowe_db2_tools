@@ -6,3 +6,8 @@ Db2 Automation Expert is one of the "experience" plugins to Unified Management S
 
 
 ![stage3a](/images/zowe_auto.jpg)
+
+
+
+Order Db2 Automation Expert on ShopZ.
+![order_dae](/images/order_dae.jpg)
