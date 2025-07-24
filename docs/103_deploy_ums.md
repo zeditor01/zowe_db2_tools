@@ -24,7 +24,9 @@ Order Unified Management Server and Db2 Admin Foundation together on ShopZ.
 
 
 
-Follow the standard PSI installation workflows. My HLQ was "DAFUMS". 
+Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up with the following datasets after the SMPE installation.
+
+![dafums_datasets](/images/dafums_datasets.jpg)
 
 
 You will be required to permanently mount two ZFS filesystems as follows.
@@ -43,6 +45,9 @@ The main pages of this repository are written to provide guidance to experienced
 
 ## 2.2 edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
 
+The heart of the configuration of Zowe was a YAML file (zowe.yaml) which tied together all the elements of the zowe configuration.
+
+Unified Management Server follows the same pattern. It also uses a YAML file to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. Editing this YAML file correctly is critical.
 
 
 
