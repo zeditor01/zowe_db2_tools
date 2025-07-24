@@ -4,5 +4,29 @@
 
 SQL Tuning Services for Db2 z/OS is independent of the Zowe infrastructure, but can be accessed from Db2 Administration Foundation by configuring access to the SQL Tuning Server's RESTful APIs.
 
-Db2 Administration Administration Foundation has a relatively simple set of catalog browsing capabilities by itself. If you have Db2 Administration Tool installed, then you can configure UMS to "discover" additional tools capabilities from Db2 Administration Tool, and expose them to Db2 Administration Foundation.
+This page will cover the deployment of SQL Tuning Services Liberty Server, and AT-TLS connection from Db2 Administration Foundation.
 ![stage3a](/images/zowe_tms.jpg)
+
+
+Contents
+1. Two options to get SQL Tuning Services
+2. ShopZ order of Query Workload Tuner
+3. Deploy Query Workload Tuner
+4. Operating the SQL Tuning Server
+5. Connection from Db2 Administration Foundation to SQL Tuning Services
+
+
+## 5.1 Two options to get SQL Tuning Services
+
+## 5.2 ShopZ order of Query Workload Tuner
+
+## 5.3 Deploy Query Workload Tuner
+
+## 5.4 Operating the SQL Tuning Server
+
+## 5.5 Connection from Db2 Administration Foundation to SQL Tuning Services
+
+
+
+
+
