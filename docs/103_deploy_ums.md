@@ -197,6 +197,11 @@ Once you are satisfied that the ZWEYAML is correctly configured, it can be used 
 
 ## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
+### Stop Zowe
+
+Could wait till later.
+
+### 2.3.1 Generate the customised workflow jobs.
 Customize and Run DAFUMS.IZP.I1.SIZPSAMP(IZPGENER) to generate the customised workflow jobs.
 
 IZPGENER results in adding ENVIRON and JCLLIB libraries
@@ -254,40 +259,40 @@ IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 ```
 
 
-5.4.7 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
+### 2.3.2 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
 IZPA3
 IZPA3V
 
-5.4.8 Create IZP class and add to the CDT. 
+### 2.3.3 Create IZP class and add to the CDT. 
 IZPB1R... YES - Create IZP class and add to the CDT. (not convinced it worked with RALT commands all following the RDEF, without a refresh)
 IZPB1RV... YES - OK
 IZPB1RF... FIX - re-run RALTs - to be sure to be sure
 
-5.4.9 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
+### 2.3.4 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
 IZPB2R... YES - Add security role profiles to the IZP class.  
 IZPB2Rv
 
-5.4.10 Create RACF IZP resource profiles to define the UMS users and their roles.  
+### 2.3.5 Create RACF IZP resource profiles to define the UMS users and their roles.  
 IZPB4R
 IZPB4RV
 
-5.4.11 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
+### 2.3.6 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
 IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
 IZPD1RV
 
-5.4.12 Grant system programmer and started task access to PKCS #11 resources.
+### 2.3.7 Grant system programmer and started task access to PKCS #11 resources.
 IZPD2R... Grant system programmer and started task access to PKCS #11 resources. 
 IZPD2VR.. verify  
 
-5.4.13 Create the PKCS #11 token for UMS. This is not required if you are  
+### 2.3.8 Create the PKCS #11 token for UMS. This is not required if you are  
 IZPD3R... Create the PKCS #11 token for UMS. This is not required if you are  
 IZPD3VR.. verify  
 
-5.4.14 Add a new user to serve as the DBA user ID.  (IZPDBA)
+### 2.3.9 Add a new user to serve as the DBA user ID.  (IZPDBA)
 IZPD4R - yes with errors... you can ignore a non-zero return code.
 IZPD4RV - no records found in zSecure
 
-5.4.15 Connect IZPDBA to the IZUUSER group for z/OSMF
+### 2.3.10 Connect IZPDBA to the IZUUSER group for z/OSMF
 IZPD5R  
 IZPD5RV
 
@@ -296,7 +301,7 @@ CONNECT IZPDBA GROUP(IZUUSER)
 READY                         
 END                           
 
-5.4.16 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
+### 2.3.11 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
 IZPD6R
 IZPD6RV
 
@@ -307,12 +312,12 @@ ICH13003I OMVSAPPL NOT FOUND
 ***                         
 
 
-5.4.117 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
+### 2.3.12 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
 IZPD7R
 IZPD7RV
 
 
-5.4.18 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+### 2.3.13 IZPSTEPL. YES - concatenate datasets in PROCLIB member
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
@@ -338,12 +343,7 @@ IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0
 ******************************** BOTTOM OF DATA ********************************
 
 
-5.4.19
-
-IZPUSRMD. N/A - If useSafOnly is set to true or you are migrating from UMS 1.1, do not submit the IZPUSRMD JCL.
-izp-encrypt-dba.sh
-
-5.4.20 Encrypt DBA credentials.
+### 2.3.14 Encrypt DBA credentials.
 
 This step failed because I hadn't run jobs IZPD2R and IZPD3R.
 
@@ -410,7 +410,7 @@ Re-Ran Encrypt DBA credentials.
 
 
 
-IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+### 2.3.15 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
 should find the base UMS plugins
 
 Job4398 - 
@@ -465,7 +465,7 @@ IZPPI0080I - End of izp-install-plugins.sh. Return code 0
 
 
 
-IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+### 2.3.16 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 should find DAF
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
@@ -506,7 +506,7 @@ IZPPI0080I - End of izp-cp-exp.sh. Return code 0
 
 ## 2.4 start the zowe server (and likely debug initial UMS startup problems).
 
-
+### 2.4.1 Prepare the PROCLIB member
 Edit the ZOWE Started Task - USER.Z31C.PROCLIB(ZWESLSTC)
 
 //ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'   
@@ -527,6 +527,7 @@ CONFIG=PARMLIB(DAFUMS.IZP.I1.PARMLIB(ZWEYAML))\
 /*                                              
 
 
+### 2.4.2 Start Zowe (including UMS)
 Start ZOWE
 S ZWESISTC,REUSASID=YES
 S ZWESLSTC
@@ -538,6 +539,8 @@ https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1
 
 ## 2.5 test Zowe from a web browser.
 
+
+### 2.5.1 Clean Start of UMS
 
 Session Renewal Error
 05/07/2025, 13:42:23
@@ -574,7 +577,7 @@ IZPDAFPM
 
 
 
-6. DAF
+### 2.5.2 Open DAF
 
 Open UMS.
 Navigate to DAF.
