@@ -6,7 +6,7 @@ These innovations are based around the Zowe foundation.
 There is no sudden migration here.
 The new paradigm augments the existing 3270 and JCL ways of working, allowing a choice of tooling interface.
 
-The IBM knowledge centers provide all the regularly-maintained official documentation on how to deploy the Zowe-based Db2 tools. 
+The [UMS Knowledge Center](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-installing-unified-management) provides all the regularly-maintained official documentation on how to deploy the Zowe-based Db2 tools. 
 This repository aims to help by sharing an end-to-end simple-scenario worked example, which may be helpful for getting started.
 
 
