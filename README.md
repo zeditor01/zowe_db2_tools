@@ -19,10 +19,7 @@ The image below represents the journey that many DB2 z/OS sites will be making.
 The starting position of many Db2 z/OS sites will be similar to the left side of the diagram.
 
 *  Most of the Db2 z/OS tools will be using 3270 interfaces, and batch JCL suites.
-*  Client tools providing graphical user interfaces were usually unavailable to many sites that outsource desktop software management.
-*  Sites that used Data Studio for graphical UI and developing stored procedures will know that Data Studio is no longer supported.
-*  Data Server Manager has also been withdrawn from support.
-*  Visual Explain tooling has been re-packaged as a z/OS liberty based SQL tuning server, accessible via Zowe or VS Code.
+*  Older, depracated client tools providing graphical user interfaces. (unless that organisation's desktop management provider would not support those tools).
 
 IBM has delivered new Db2 z/OS tooling interfaces since the Zowe project was released, as represented on the right side of the diagram.
 * Zowe is a framework that provide API-drive integration for tools, and supports browser-based user interfaces directly from z/OS. 
