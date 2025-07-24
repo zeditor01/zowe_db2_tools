@@ -29,9 +29,10 @@ Order Database Services Expansion Pack from Shopz
 Order Query Workload Tuner from Shopz
 ![order_qwt](/images/order_qwt.jpg)
 
+This worked example using Query Workload tuner.
 
 ## 5.2 Install Query Workload Tuner
-
+This is a standard portable software instance installation, which will not be covered in the main page. 
 ## 5.3 Deploy Query Workload Tuner
 
 ## 5.4 Operating the SQL Tuning Server
