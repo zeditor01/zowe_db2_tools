@@ -18,6 +18,9 @@ Now we wish to Deploy the Unified Management Server and Db2 Administration Found
 
 ## 2.1 install UMS and DAF code. (it makes sense to install DAF and UMS together).
 
+Order Unified Management Server and Db2 Admin Foundation together on ShopZ.
+![order_ums_daf](/images/order_ums_daf.jpg)
+
 
 
 
