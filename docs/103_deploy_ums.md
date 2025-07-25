@@ -54,8 +54,16 @@ UMS Zowe plug-ins require Program Control authorization. In order to tag the fil
 
 
 ## 2 Understanding the UMS security model
+UMS and DB2 Administration Foundation now requires a security model with SAF authentication (useSAFOnly=true). This means that 
+1. all users of UMS & DAF need to be authenticated against SAF ( RACF in this example ).
+2. a powerful DBA ID is defined to perform all authorised Db2 tasks on behalf of authenticated users. 
+3. The DBA userid is shielded from human use, and can be authenticated  by a digital certificate.
+4. A Profile Qualifier is prepended to SAF profile checks to determine team membership and role assignment.
+5. UMS uses Java Web Tokens (JWT) to enable secure single-signon sessions. JWTs encapsulate identity and authentication data in a JSON structure, and are cryptographically signed.
+6. RACF Class IZP is used to control UMS applicaton roles and function security.
+7. RACF Class CRYPTOZ is used for secure storage and handling of encryption keys/tokens.
 
-
+A more detailed explanation of the security architecture for UMS is available in the knowledge center [her](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
 
 ## 3 Edit the ZWEYAML parmlib member
 
