@@ -12,7 +12,7 @@ UMS leverages the Zowe platform for UI, authentication, and REST services, appea
 
 ![stage3](/images/zowestage3.jpg)
 
-The components and dependencies of Unified Management Server are describe in the Knowledge Center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-security-overview)
+The components and dependencies of Unified Management Server are illustrated in the diagram below and described in the Knowledge Center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-security-overview). From the top, users login to UMS, get authenticated by SAF (eg: RACF), and launch the Db2 Administration Foundation application, which makes REST API call to consume other services.
 
 ![izp_components](/images/izp_components.jpg)
 
