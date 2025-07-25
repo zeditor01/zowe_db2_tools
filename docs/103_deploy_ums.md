@@ -12,6 +12,10 @@ UMS leverages the Zowe platform for UI, authentication, and REST services, appea
 
 ![stage3](/images/zowestage3.jpg)
 
+The components and dependencies of Unified Management Server are describe in the Knowledge Center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-security-overview)
+
+![izp_components](/images/izp_components.jpg)
+
 This page is a worked example of the following steps to deploy UMS into Zowe.
 1. install UMS and DAF code. (it makes sense to install DAF and UMS together).
 2. edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
