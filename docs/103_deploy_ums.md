@@ -511,6 +511,7 @@ That should be it ... if we have executed all these steps correctly, Zowe should
 ### 5.1 Prepare the PROCLIB member
 Edit the ZOWE Started Task - USER.Z31C.PROCLIB(ZWESLSTC)
 
+```
 //ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'   
 //ZWELNCH  EXEC PGM=ZWELNCH,REGION=&RGN,TIME=NOLIMIT,                  
 // PARM='ENVAR(_CEE_ENVFILE=DD:STDENV),POSIX(ON)/&HAINST.'             
@@ -533,14 +534,14 @@ CONFIG=PARMLIB(DAFUMS.IZP.I1.PARMLIB(ZWEYAML))\
 Start ZOWE
 S ZWESISTC,REUSASID=YES
 S ZWESLSTC
-
+```
 
 
 
 
 
 ## 6 test Zowe from a web browser.
-When I first tested Zowe after installing UMS, I encountered problems
+When I first tested Zowe after installing UMS, I encountered problems when I logged into Zowe at https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
 
 I waited for Zowe startup to finish, before logging on to Zowe as normal. As soon as I logged onto Zowe, I encountered a Popup window reporting a session renewal error.
 
@@ -557,47 +558,45 @@ These messages gave very little context and detail about the problem. They force
 
 ### 6.1 Clean Start of UMS
 
+Resolving problems is the same as any other started task on z/OS : find the joblog, review warnings and errors, and correct whatever causes the,
 
+Eventually I found where the UMS logs were. ( /apps/zowe/v20/log or SDSF ZWESLSTC job output ). ZOWE logs and UMS logs are shared.
 
-
-https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
-
-Session Renewal Error
-05/07/2025, 13:42:23
-Session could not be renewed. Logout will occur unless renewed. Click here to retry.
-
-Open UMS ...
-Error Request failed with status code 401
-
-
-Eventually I found where the UMS logs were. ( /apps/zowe/v20/log or SDSF ZWESLSTC job output )
-ZOWE logs and UMS logs are shared.
-
-These logs - at the very end when I logon to ZOWE show an error
+These logs - at the very end when I logon to ZOWE showed an error
+```
 <ZWED:83952169> ZWESVUSR WARN (com.rs.auth.db2Auth,db2Auth.js:153) UMS login: connect ECONNREFUSED 192.168.1.171:12023
+```
 
-ECONNREFUSED means a problem with TCPIP address/port or firewall usually.
-Or perhaps something as basic as UMS not started.
+ECONNREFUSED means a problem with TCPIP address/port or firewall usually. I know that my TCPIP network on my ZPDT is completely open, so I guessed that it was something more basic - such as the UMS server not actually being started ?
+
 
 Hidden within the zowe/ums output is confirmation that UMS did not start
+```
 IZPPI0205E - Validation unsuccessful, it returned code 4 for DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
 <ZWELNCH:83951980> ZWESVUSR ERROR ZWEL0038E failed to restart component izp, max retries reached
-
+```
 
 So, given that the reason for UMS not starting looks likely that DAFUMS.IZP.I1.PARMLIB(IZPDB2PM) prevented successful validation,
 I edited it, and entered the HLQs for IZP and AFX/ADM
 
 
---> Conclusion: can't add a new experience until it is properly configured
-Configure more advanced DB2 Admin Tool experiences. ( LIST THEM )
-Edit the additional YAML files to locate the DB2AOC libraries
-IZPDB2PM
-IZPDAFPM
+### Lesson Learnt
+When you add a new experience, if it isn't configured correctly it may stop UMS from comming up.
 
 
 
 
-### 6.2 Open DAF
+
+### 6.2 Editing IZPDB2PM
+
+The fix for my scenario was to edit DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
+
+This member identifies the libraries used to provide DB2 Administration and Catalog Browsing functions.
+
+
+
+![izpdb2pm](/images/izpdb2pm.jpg)
+
 
 Open UMS.
 Navigate to DAF.
