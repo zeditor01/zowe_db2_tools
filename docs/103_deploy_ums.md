@@ -591,73 +591,48 @@ When you add a new experience, if it isn't configured correctly it may stop UMS 
 
 The fix for my scenario was to edit DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
 
-This member identifies the libraries used to provide DB2 Administration and Catalog Browsing functions.
-
-
+This member identifies the libraries used to provide DB2 Administration and Catalog Browsing functions. If you don't provide valid values for the parameters on line 160, 162, 173 and 176 in the screenshot below, UMS will fail to start.
 
 ![izpdb2pm](/images/izpdb2pm.jpg)
 
+If you don't have DB2 Administration Tool (and APAR PH55177) installed then you should just point to the UMS and DAF libraries, as follows
 
-Open UMS.
-Navigate to DAF.
+```
+000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                                   
+000161 # Sample value (recommended): SIZP                                               
+000162 IZP_DB2_USR_PREFIX: SIZP                                                         
+...                                                   
+000173 IZP_DB2_ADB_HLQ: DAFUMS.AFX                                                          
+000174 # Sample value (if using IBM Admin Tool): SADB                                   
+000175 # Sample value (otherwise, using Admin Foundation files) : SAFX                  
+000176 IZP_DB2_ADB_PREFIX: SAFX                                                         
+```
+But since I do have have DB2 Administration Tool (and APAR PH55177) installed, I am pointing to UMS and Db2 Admin Tool libraries, as follows
 
-Discover DALLASD
-
-Register DALLASD
->>> Lots of errors.
->>> SSL connection 5046 - failed - need to setup trust from ZOWE/UMS to Db2 ???
->>> non-secure 5045 - failed - no SYSADM grant ; DSNTEP2 DDL connection failure ( APPLCOMPATs etc... )
->>> Rebind Db2 Connect Packages ; Rebind DSNTEP2
->>> Still failing... try re-IPL and fresh system
->>> Aha - when registering the DBDG subsystem, plan name for DSNTEP2 is DSNTEP13
-
-Basic Catalog Navigation.
-All food
-
-Gen DDL - fails.
-SQLCODE -444 : Procedure DBDGDDL not found.
-Funny - Db2 Admin tool DDL GEN invoked DBDGDDL in DBGENV1 without fail.
-But DAF does the same thing - and Load Module Not found
-
-I was trying with usig Db2 Admin Tool "HLQ IZP_DB2_ADB_PREFIX: SADB" in DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
-But I notice there are two Procedures in SYSROUTINES - One bound in 2022, the other bound today.
-The DAF version of DDL gen will only generate DDL for a single object at a time.
-Lets see if that will work ?
-
-DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
-000153 # Required Parameters                                                   
-000154 # High-level qualifier (HLQ) and prefix for user data sets created and  
-000155 # written to during various JCL Jobs execution. Eg, using the sample val
-000156 # registring a Db2 subsystem will write to HLQ.IZP.DSN.SIZPTLIB         
-000157 # It is recommended to use the UMS read/write HLQ specified by          
-000158 # components.izp.dataset.hlq in ZWEYAML.                                
-000159 # Sample value: HLQ.IZP.DSN                                             
-000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                          
-000161 # Sample value (recommended): SIZP                                      
-000162 IZP_DB2_USR_PREFIX: SIZP                                                
-000163                                                                         
-000164 # Required Parameters                                                   
-000165 # High-level qualifier (HLQ) and prefix for IBM Db2 Administration Tool 
-000166 # related data sets to be concatenated in various generated JCL.        
-000167 # If using IBM Db2 Administration Tool for z/OS, specify HLQ where      
-000168 # ADB functionality was SMPE installed.                                 
-000169 # Otherwise enter the UMS read/write HLQ specified by                   
-000170 # components.izp.dataset.hlq in ZWEYAML.                                
-000171 # Sample value: HLQ.ADB.DSN                                             
-000172 # Sample value: HLQ.IZP.DSN                                             
-000173 IZP_DB2_ADB_HLQ: ADBD10                                                 
-000174 # Sample value (if using IBM Admin Tool): SADB                          
-000175 # Sample value (otherwise, using Admin Foundation files) : SAFX         
-000176 IZP_DB2_ADB_PREFIX: SAFX                                                
-
-recycle ZOWE
-Retest
+```
+000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                                   
+000161 # Sample value (recommended): SIZP                                               
+000162 IZP_DB2_USR_PREFIX: SIZP                                                         
+...                                                   
+000173 IZP_DB2_ADB_HLQ: ADBD10                                                          
+000174 # Sample value (if using IBM Admin Tool): SADB                                   
+000175 # Sample value (otherwise, using Admin Foundation files) : SAFX                  
+000176 IZP_DB2_ADB_PREFIX: SADB                                                         
+```
 
 
-Config Steps
-https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-installing-db2-administration-foundation
+### Re-Testing
 
-Create a WLM environment by using the template in JCLLIB(WLMPROC) that points to the load libraries in <HLQ>.SIZPLLIB.
+Stop and Start zowe after resolving this and any other problems until you get a message saying that UMS is started, like the one below
+
+```
+IZPPI0006I - IBM Unified Management Server is started. (pid=33620487)
+```
+
+Now you can logon to Zowe, start UMS, register a Db2 Subsystem to access, and start using Db2 Administration Foundation. There steps are documented in the next section.
+
+
+
 
 
 
