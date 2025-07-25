@@ -347,7 +347,29 @@ The generated job IZPD4R is incomplete and fails. Suggest you follow whatever lo
 
 
 ### 4.3 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+This job updates the PROCLIB member for Zowe (ZWESASTC) to concatenate the libraries of zowe and UMS
 
+```
+/*MESSAGE UPDATE ZOWE AUX PROCLIB FOR IZP                                      
+//SET1 SET UMSVLOC='/usr/lpp/IBM/izp/v1r2m0/bin'                               
+//SERVER    EXEC PGM=BPXBATCH,REGION=800M,TIME=NOLIMIT,                        
+//   PARM='SH &UMSVLOC/ums/opt/bin/izp-concatenate-proclib.sh'                 
+//STDOUT   DD SYSOUT=*                                                         
+//STDENV   DD *                                                                
+STEPLIB_DATASET=DSND10.SDSNLOAD                                                
+PROCLIB_MEMBER=ZWESASTC                                                        
+IZP_HLQ=DAFUMS.IZP.I1                                                          
+_BPXK_AUTOCVT=ON                                                               
+_CEE_RUNOPTS=FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) HEAPPOOLS(OFF) HEAPPOOLS64(OFF)
+_TAG_REDIR_IN=TXT                                                              
+_TAG_REDIR_OUT=TXT                                                             
+_TAG_REDIR_ERR=TXT                                                             
+/*                                                                             
+```
+
+Actually it executes a USS script called izp-concatenate-proclib.sh. SDSF job output below
+
+```
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
 ********************************* TOP OF DATA **********************************
@@ -370,7 +392,7 @@ IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
 IZPPI0092I - Updated USER.Z31C.PROCLIB(ZWESASTC) with STEPLIB DSND10.SDSNLOAD   
 IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0                   
 ******************************** BOTTOM OF DATA ********************************
-
+```
 
 ### 4.4 Encrypt DBA credentials.
 
