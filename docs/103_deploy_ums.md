@@ -62,11 +62,11 @@ Similarly, the heart of the configuration of Unified Management Server is it's Y
 
 Choose a naming standard for the datasets of the UMS instance. My SMPE installation created the UMS installation datasets under ```DAFUMS.IZP.**``` so I decided to create my instance datasets under the HLQ ```DAFUMS.IZP.I1.**```
 
-Create a customisated copy of the installation SAMPLLIB ```DAFUMS.IZP.SIZPSAMP``` at ```DAFUMS.IZP.I1.SIZPSAMP``` and copy all 6 members over. (IZPALOPL, IZPCPYML, IZPCPYM2, IZPGENER, IZPMIGRA, IZPSYNCY ).
+Create a customisated copy of the installation SAMPLLIB (DAFUMS.IZP.SIZPSAMP) at (DAFUMS.IZP.I1.SIZPSAMP) and copy all 6 members over. (IZPALOPL, IZPCPYML, IZPCPYM2, IZPGENER, IZPMIGRA, IZPSYNCY ).
 
-Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... which Allocates DAFUMS.IZP.I1.PARMLIB  
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... to Allocate DAFUMS.IZP.I1.PARMLIB  
 
-Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... Creates the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... to create the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
 
 Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML). This is a very long and verbose dataset with incredibly strict syntax standards. An excerpt for the lines that I edited in included below, with line-numbered notes to explain the logic for my edits.
 
@@ -202,14 +202,13 @@ Once you are satisfied that the ZWEYAML is correctly configured, it can be used 
 
 ## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
-### Stop Zowe
-
-Could wait till later.
+### Stop Zowe Now
+These installation workflow steps will affect Zowe, which should be stopped before proceeding.
 
 ### 2.3.1 Generate the customised workflow jobs.
 Customize and Run DAFUMS.IZP.I1.SIZPSAMP(IZPGENER) to generate the customised workflow jobs.
 
-IZPGENER results in adding ENVIRON and JCLLIB libraries
+IZPGENER results in adding ENVIRON and JCLLIB libraries. The JCLLIB PDS contains the customised installation jobs. The ENVIRON PDS stored environment configuration details.
 ```
 'DAFUMS.IZP.I1.ENVIRON' 
 'DAFUMS.IZP.I1.JCLLIB'  
@@ -223,9 +222,11 @@ In this worked example, the sequence of jobs that I chose to run were as follows
 
 ```
 IZPA1.... N/A - allocates TEAMLIST
-IZPA1V... verify  
+IZPA1V... verification job
+
 IZPA2.... N/A - allocates USERLIST    
-IZPA2V... verify    
+IZPA2V... verification job
+  
 IZPA3.... YES - allocates IZP.CUST.DBA.ENCRYPT   
 IZPA3V... verify  
 IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly.  
