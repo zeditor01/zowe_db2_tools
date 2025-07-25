@@ -349,25 +349,14 @@ The generated job IZPD4R is incomplete and fails. Suggest you follow whatever lo
 ### 4.3 IZPSTEPL. YES - concatenate datasets in PROCLIB member
 This job updates the PROCLIB member for Zowe (ZWESASTC) to concatenate the libraries of zowe and UMS
 
+If you remember when we edited the ZWEYAML file, line 28 provided the path for the first experience: Db2 Administration Foundation.
+
 ```
-/*MESSAGE UPDATE ZOWE AUX PROCLIB FOR IZP                                      
-//SET1 SET UMSVLOC='/usr/lpp/IBM/izp/v1r2m0/bin'                               
-//SERVER    EXEC PGM=BPXBATCH,REGION=800M,TIME=NOLIMIT,                        
-//   PARM='SH &UMSVLOC/ums/opt/bin/izp-concatenate-proclib.sh'                 
-//STDOUT   DD SYSOUT=*                                                         
-//STDENV   DD *                                                                
-STEPLIB_DATASET=DSND10.SDSNLOAD                                                
-PROCLIB_MEMBER=ZWESASTC                                                        
-IZP_HLQ=DAFUMS.IZP.I1                                                          
-_BPXK_AUTOCVT=ON                                                               
-_CEE_RUNOPTS=FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) HEAPPOOLS(OFF) HEAPPOOLS64(OFF)
-_TAG_REDIR_IN=TXT                                                              
-_TAG_REDIR_OUT=TXT                                                             
-_TAG_REDIR_ERR=TXT                                                             
-/*                                                                             
+000027     experiences:                   
+000028       - /usr/lpp/IBM/afx/v1r2m0/bin
 ```
 
-Actually it executes a USS script called izp-concatenate-proclib.sh. SDSF job output below
+IZPSTEPL job executes a USS script called izp-concatenate-proclib.sh. The job checks all new experiences indentified in ZWELYAML, and installs them. SDSF job output below
 
 ```
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
@@ -418,16 +407,14 @@ IBMUSER:/u/ibmuser: >
 
 You can eyeball the Encrypted Credentials Data Set: {components.izp.dataset.dbaEncryption} = DAFUMS.IZP.I1.DBA.ENCRYPT.
 
-![db2_encrypt](/images/dba_encrypt.jpg)
-
-
+![dba_encrypt](/images/dba_encrypt.jpg)
 
 
 
 ### 4.5 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
-should find the base UMS plugins
+This job is used to locate and install the various zowe plugins that UMS needs. Job output shown below.
 
-Job4398 - 
+```
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04398  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
 ********************************* TOP OF DATA **********************************
@@ -475,13 +462,14 @@ Writing temp file for PARMLIB update. Command= cp -v "/tmp/.zweenv-3146/zwe-parm
 bos extend currSize=0x0 dataSize=0x178a chunk=0x1000 extend=0x178a              
 IZPPI0080I - End of izp-install-plugins.sh. Return code 0                       
 ******************************** BOTTOM OF DATA ********************************
-
+```
 
 
 
 ### 4.6 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
-should find DAF
+This job is used to locate and install the various UMS experiences. Job output shown below.
 
+```
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
 ********************************* TOP OF DATA **********************************
@@ -512,10 +500,10 @@ alloc da('DAFUMS.IZP.I1.SAFXSAMP') dsorg(po) dsntype(library) tracks space(10,5)
 IZPPI0049I - Experience post-installation status: /usr/lpp/IBM/afx/v1r2m0/bin/ad
 IZPPI0080I - End of izp-cp-exp.sh. Return code 0                                
 ******************************** BOTTOM OF DATA ********************************
+```
 
 
-
-
+That should be it ... if we have executed all these steps correctly, Zowe should start up, and bring UMS and DAF with it.
 
 
 ## 5 start the zowe server (and likely debug initial UMS startup problems).
@@ -546,15 +534,33 @@ Start ZOWE
 S ZWESISTC,REUSASID=YES
 S ZWESLSTC
 
-https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
+
 
 
 
 
 ## 6 test Zowe from a web browser.
+When I first tested Zowe after installing UMS, I encountered problems
+
+I waited for Zowe startup to finish, before logging on to Zowe as normal. As soon as I logged onto Zowe, I encountered a Popup window reporting a session renewal error.
+
+```
+Session Renewal Error
+05/07/2025, 13:42:23
+Session could not be renewed. Logout will occur unless renewed. Click here to retry.
+```
+
+If I dismissed the error, and tried to Open the Unified Experience application, further errors ensued.
+
+These messages gave very little context and detail about the problem. They forced me to find out where the Zowe and UMS joblogs were written to, so that I could scan for errors and other diagnostic information. This section is all about where to look for errors.
 
 
 ### 6.1 Clean Start of UMS
+
+
+
+
+https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
 
 Session Renewal Error
 05/07/2025, 13:42:23
