@@ -12,6 +12,10 @@ UMS leverages the Zowe platform for UI, authentication, and REST services, appea
 
 ![stage3](/images/zowestage3.jpg)
 
+The components and dependencies of Unified Management Server are illustrated in the diagram below and described in the Knowledge Center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=zos-security-overview). From the top, users login to UMS, get authenticated by SAF (eg: RACF), and launch the Db2 Administration Foundation application, which makes REST API call to consume other services.
+
+![izp_components](/images/izp_components.jpg)
+
 This page is a worked example of the following steps to deploy UMS into Zowe.
 1. install UMS and DAF code. (it makes sense to install DAF and UMS together).
 2. edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
@@ -63,7 +67,9 @@ UMS and DB2 Administration Foundation now requires a security model with SAF aut
 6. RACF Class IZP is used to control UMS applicaton roles and function security.
 7. RACF Class CRYPTOZ is used for secure storage and handling of encryption keys/tokens.
 
-A more detailed explanation of the security architecture for UMS is available in the knowledge center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
+The diagram below represents how JWT tokens are used to support sessions. A more detailed explanation of the security architecture for UMS is available in the knowledge center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
+
+![izp_tokens](/images/izp_tokens.jpg)
 
 ## 3 Edit the ZWEYAML parmlib member
 
@@ -265,10 +271,10 @@ IZPC2VR.. verification job
 IZPD1R... Required - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
 IZPD1VR.. verification job
    
-IZPD2R... N/A - Grant system programmer and started task access to PKCS #11 resources. 
+IZPD2R... Required - Grant system programmer and started task access to PKCS #11 resources. 
 IZPD2VR.. verification job
    
-IZPD3R... N/A - Create the PKCS #11 token for UMS. This is not required if you are  
+IZPD3R... Required - Create the PKCS #11 token for UMS.   
 IZPD3VR.. verification job
    
 IZPD4R... Required - Add a new user to serve as the DBA user ID.  
@@ -295,66 +301,75 @@ IZPEXPIN. Required - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 ```
 
 
-### 4.2 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
-IZPA3
-IZPA3V
+### 4.2 Execute the generated jobs for RACF-related resources ( IZPA3 through to IZPD7R )
 
-### 4.3 Create IZP class and add to the CDT. 
-IZPB1R... YES - Create IZP class and add to the CDT. (not convinced it worked with RALT commands all following the RDEF, without a refresh)
-IZPB1RV... YES - OK
-IZPB1RF... FIX - re-run RALTs - to be sure to be sure
-
-### 4.4 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
-IZPB2R... YES - Add security role profiles to the IZP class.  
-IZPB2Rv
-
-### 4.5 Create RACF IZP resource profiles to define the UMS users and their roles.  
-IZPB4R
-IZPB4RV
-
-### 4.6 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
-IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
-IZPD1RV
-
-### 4.7 Grant system programmer and started task access to PKCS #11 resources.
-IZPD2R... Grant system programmer and started task access to PKCS #11 resources. 
-IZPD2VR.. verify  
-
-### 4.8 Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3R... Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3VR.. verify  
-
-### 4.9 Add a new user to serve as the DBA user ID.  (IZPDBA)
-IZPD4R - yes with errors... you can ignore a non-zero return code.
-IZPD4RV - no records found in zSecure
-
-### 4.10 Connect IZPDBA to the IZUUSER group for z/OSMF
-IZPD5R  
-IZPD5RV
-
-READY                         
-CONNECT IZPDBA GROUP(IZUUSER) 
-READY                         
-END                           
-
-### 4.11 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
-IZPD6R
-IZPD6RV
-
-n/a
-Note: If the APPL class is active and OMVSAPPL is defined, submit the job IZPD6R to permit IZPSRGSP, IZPSRGAD, DBA user ID, UMS user, and the Zowe STC user (ZWESLSTC) read access on the OMVSAPPL resource. 
-RLIST APPL OMVSAPPL
-ICH13003I OMVSAPPL NOT FOUND
-***                         
+These jobs are all customised from the IZPGENER job, and should be ready to execute. In each case, review JCL, submit and review output, and then run the associated verification job to confirm successful creation of the artefacts.
 
 
-### 4.12 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
-IZPD7R
-IZPD7RV
+
+* IZPA3 - Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
+* IZPA3V - verifies it
+
+* IZPB1R - Create IZP class and add to the CDT
+* IZPB1RV - verifies it
+
+* IZPB2R - Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
+* IZPB2RV - verifies it
+
+* IZPB4R - Create RACF IZP resource profiles to define the UMS users and their roles.  
+* IZPB4RV - verifies it
+
+* IZPD1R - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.
+* IZPD1RV - verifies it
+
+* IZPD2R - Grant system programmer and started task access to PKCS #11 resources.
+* IZPD2RV - verifies it
+
+* IZPD3R - Create the PKCS #11 token for UMS.
+* IZPD3RV - verifies it
+
+* IZPD4R - Add a new user to serve as the DBA user ID.  (IZPDBA)
+* IZPD4RV - verifies it
+
+The generated job IZPD4R is incomplete and fails. Suggest you follow whatever local jobs exist for creating RACF IDs.
+
+* IZPD5R - Connect IZPDBA to the IZUUSER group for z/OSMF
+* IZPD5RV - verifies it
+
+* IZPD6R -  Grant the DBA user ID access to applications.
+* IZPD6RV - verifies it
+
+* IZPD7R -  Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.
+* IZPD7RV - verifies it
+                        
+
+                    
 
 
-### 4.13 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+### 4.3 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+This job updates the PROCLIB member for Zowe (ZWESASTC) to concatenate the libraries of zowe and UMS
 
+```
+/*MESSAGE UPDATE ZOWE AUX PROCLIB FOR IZP                                      
+//SET1 SET UMSVLOC='/usr/lpp/IBM/izp/v1r2m0/bin'                               
+//SERVER    EXEC PGM=BPXBATCH,REGION=800M,TIME=NOLIMIT,                        
+//   PARM='SH &UMSVLOC/ums/opt/bin/izp-concatenate-proclib.sh'                 
+//STDOUT   DD SYSOUT=*                                                         
+//STDENV   DD *                                                                
+STEPLIB_DATASET=DSND10.SDSNLOAD                                                
+PROCLIB_MEMBER=ZWESASTC                                                        
+IZP_HLQ=DAFUMS.IZP.I1                                                          
+_BPXK_AUTOCVT=ON                                                               
+_CEE_RUNOPTS=FILETAG(AUTOCVT,AUTOTAG) POSIX(ON) HEAPPOOLS(OFF) HEAPPOOLS64(OFF)
+_TAG_REDIR_IN=TXT                                                              
+_TAG_REDIR_OUT=TXT                                                             
+_TAG_REDIR_ERR=TXT                                                             
+/*                                                                             
+```
+
+Actually it executes a USS script called izp-concatenate-proclib.sh. SDSF job output below
+
+```
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
 ********************************* TOP OF DATA **********************************
@@ -377,46 +392,14 @@ IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
 IZPPI0092I - Updated USER.Z31C.PROCLIB(ZWESASTC) with STEPLIB DSND10.SDSNLOAD   
 IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0                   
 ******************************** BOTTOM OF DATA ********************************
+```
 
+### 4.4 Encrypt DBA credentials.
+The script encrypts the DBA username and password, and stored them in the Encrypted Credentials Data Set: {components.izp.dataset.dbaEncryption} = DAFUMS.IZP.I1.DBA.ENCRYPT.
 
-### 4.14 Encrypt DBA credentials.
+This step is another USS script, but it must be executed from within a USS shell in order that the submitted may respond to a prompt to enter the password for the IZPDBA userid. The script invocation is captured below:
 
-This step failed because I hadn't run jobs IZPD2R and IZPD3R.
-
-izp-encrypt-dba.sh encrypts IZPDBA user's password
-
-As an install user, run izp-encrypt-dba.sh from your UMS installation location. You need to provide the high-level qualifier of the environment data set. This is the YAML variable listed as {components.izp.dataset.hlq}.
-
-{components.izp.runtimeDirectory}/ums/opt/bin/izp-encrypt-dba.sh {components.izp.dataset.hlq}
-
-/usr/lpp/IBM/izp/v1r2m0/bin
-DAFUMS.IZP.I1
-
-Replace {components.izp.runtimeDirectory} and {components.izp.dataset.hlq}, on your command line, with the values of these parameters in the ZWEYAML member.
-The izp-encrypt-dba.sh shell script populates the {components.izp.dataset.dbaEncryption} data set used to store the encrypted DBA credential. 
-It is not recommended to use OMVS to complete this step because the password is visible on the screen in plain text. Use SSH to perform this step.
-
-/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
-
-For more information, refer to Updating UMS DBA user credentials.
-
-
-/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
-IZPPI0079I - Start of izp-encrypt-dba.sh
-IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
-IZP Credential Encryption Utility
-Using PKCS #11 token label: IZPTOK
-Using path to PKCS #11 library file: /usr/lpp/pkcs11/lib/csnpca64.so
-IZPSC0003E - Fail to create dba configuration, reason 'Invalid Token Label : IZPTOK'.Encryption Failed
-IZPPI0202E - Could not encrypt credentials. Refer to the log file: /tmp/izp-n-20250704211308.log.
-IZPPI0080I - End of izp-encrypt-dba.sh. Return code 1
-
-===
-
-run jobs IZPD2R and IZPD3R.
-Then retry Encrypt DBA credentials.
-When prompted for IZPDBA password - enter l0nep1ne
-
+```
 IBMUSER:/u/ibmuser: >/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
 IZPPI0079I - Start of izp-encrypt-dba.sh
 IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
@@ -431,22 +414,17 @@ Reenter the password:
 Supplied Credentials encrypted
 IZPPI0080I - End of izp-encrypt-dba.sh. Return code 0
 IBMUSER:/u/ibmuser: >
+```
 
+You can eyeball the Encrypted Credentials Data Set: {components.izp.dataset.dbaEncryption} = DAFUMS.IZP.I1.DBA.ENCRYPT.
 
-
->>>>>>>>>>>>>> EXTRA
-Create IZPDBA based on IBMUSER ( to get SYSADM etc... )
-Set a password for IZPDBA (adcdmst)
-logged on tso - changed pwd to COCACOLA
-deleted DAFUMS.IZP.I1.DBA.ENCRYPT
-re-allocated DAFUMS.IZP.I1.DBA.ENCRYPT
-Re-Ran Encrypt DBA credentials.
+![db2_encrypt](/images/dba_encrypt.jpg)
 
 
 
 
 
-### 4.15 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+### 4.5 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
 should find the base UMS plugins
 
 Job4398 - 
@@ -501,7 +479,7 @@ IZPPI0080I - End of izp-install-plugins.sh. Return code 0
 
 
 
-### 4.16 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+### 4.6 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 should find DAF
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
