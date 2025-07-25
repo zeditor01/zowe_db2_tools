@@ -216,52 +216,71 @@ IZPGENER results in adding ENVIRON and JCLLIB libraries. The JCLLIB PDS contains
 'DAFUMS.IZP.I1.SIZPSAMP'
 ```
 
-Dataset 'DAFUMS.IZP.I1.JCLLIB' contains all the JCL's that may ( or may not ) need to be run. You need to refer to [this page](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=references-list-jcllib-members) to decide which jobs need to be run for this instance.
+Dataset 'DAFUMS.IZP.I1.JCLLIB' contains all the JCL's that may ( or may not ) need to be run. Each job is supplied with a verification job to check the outcome. You need to refer to [this page](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=references-list-jcllib-members) to decide which jobs need to be run for this instance.
 
 In this worked example, the sequence of jobs that I chose to run were as follows.
 
 ```
-IZPA1.... N/A - allocates TEAMLIST
+IZPA1.... N/A - allocates TEAMLIST, which is no longer used for access control because UMS now requires useSAFOnly: true
 IZPA1V... verification job
 
-IZPA2.... N/A - allocates USERLIST    
+IZPA2.... N/A - allocates USERLIST, which is no longer used for access control because UMS now requires useSAFOnly: true    
 IZPA2V... verification job
   
-IZPA3.... YES - allocates IZP.CUST.DBA.ENCRYPT   
-IZPA3V... verify  
-IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly.  
-IZPB0VR.. verify  
-IZPB1R... YES - Create IZP class and add to the CDT.  
-IZPB1VR.. verify  
-IZPB2R... YES - Add security role profiles to the IZP class.   
-IZPB2VR.. verify  
+IZPA3.... Required - allocates IZP.CUST.DBA.ENCRYPT, which is used to store the encryption token for the DBA id.  
+IZPA3V... verification job
+ 
+IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly: true   
+IZPB0VR.. verification job
+   
+IZPB1R... Required - Create IZP class and add to the CDT.  
+IZPB1VR.. verification job
+    
+IZPB2R... Required - Add security role profiles to the IZP class.   
+IZPB2VR.. verification job
+   
 IZPB3R... N/A - Create generic profiles to secure userList and teamList data sets. This is not required if useSAFOnly=true.  
-IZPB3VR.. verify  
-IZPB4R... YES - Create RACF IZP resource profiles to define the UMS users and their roles.  
-IZPB4VR.. verify  
+IZPB3VR.. verification job
+   
+IZPB4R... Required - Create RACF IZP resource profiles to define the UMS users and their roles.  
+IZPB4VR.. verification job
+   
 IZPC1R... N/A - Add surrogate users to impersonate when accessing the userList and teamList data sets during runtime. This is not required if useSAFOnly=true.  
-IZPC1VR.. verify  
+IZPC1VR.. verification job
+   
 IZPC2R... N/A - Grant surrogate user access to the userList and teamList profiles. This is not required if useSAFOnly=true.  
-IZPC2VR.. verify  
-IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
-IZPD1VR.. verify  
+IZPC2VR.. verification job
+   
+IZPD1R... Required - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
+IZPD1VR.. verification job
+   
 IZPD2R... N/A - Grant system programmer and started task access to PKCS #11 resources. 
-IZPD2VR.. verify  
+IZPD2VR.. verification job
+   
 IZPD3R... N/A - Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3VR.. verify  
-IZPD4R... YES - Add a new user to serve as the DBA user ID.  
-IZPD4VR.. verify  
-IZPD5R... YES - Connect the DBA user ID to the IZUUSER group for z/OSMF.  
-IZPD5VR.. verify  
-IZPD6R... YES - Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.   
-IZPD6VR.. verify  
-IZPD7R... YES - Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.   
-IZPD7VR.. verify  
-IZPSTEPL. YES - concatenate datasets in PROCLIB member
+IZPD3VR.. verification job
+   
+IZPD4R... Required - Add a new user to serve as the DBA user ID.  
+IZPD4VR.. verification job
+   
+IZPD5R... Required - Connect the DBA user ID to the IZUUSER group for z/OSMF.  
+IZPD5VR.. verification job
+   
+IZPD6R... Required - Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.   
+IZPD6VR.. verification job
+   
+IZPD7R... Required - Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.   
+IZPD7VR.. verification job
+   
+IZPSTEPL. Required - concatenate datasets in PROCLIB member
+
 IZPUSRMD. N/A - If useSafOnly is set to true or you are migrating from UMS 1.1, do not submit the IZPUSRMD JCL.
-izp-encrypt-dba.sh
-IZPIPLUG. YES - Install Zowe plugins using the zwe command.
-IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+
+izp-encrypt-dba.sh ... Required - 
+
+IZPIPLUG. Required - Install Zowe plugins using the zwe command.
+
+IZPEXPIN. Required - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 ```
 
 
