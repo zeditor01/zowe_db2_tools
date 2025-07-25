@@ -395,43 +395,11 @@ IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0
 ```
 
 ### 4.4 Encrypt DBA credentials.
+The script encrypts the DBA username and password, and stored them in the Encrypted Credentials Data Set: {components.izp.dataset.dbaEncryption} = DAFUMS.IZP.I1.DBA.ENCRYPT.
 
-This step failed because I hadn't run jobs IZPD2R and IZPD3R.
+This step is another USS script, but it must be executed from within a USS shell in order that the submitted may respond to a prompt to enter the password for the IZPDBA userid. The script invocation is captured below:
 
-izp-encrypt-dba.sh encrypts IZPDBA user's password
-
-As an install user, run izp-encrypt-dba.sh from your UMS installation location. You need to provide the high-level qualifier of the environment data set. This is the YAML variable listed as {components.izp.dataset.hlq}.
-
-{components.izp.runtimeDirectory}/ums/opt/bin/izp-encrypt-dba.sh {components.izp.dataset.hlq}
-
-/usr/lpp/IBM/izp/v1r2m0/bin
-DAFUMS.IZP.I1
-
-Replace {components.izp.runtimeDirectory} and {components.izp.dataset.hlq}, on your command line, with the values of these parameters in the ZWEYAML member.
-The izp-encrypt-dba.sh shell script populates the {components.izp.dataset.dbaEncryption} data set used to store the encrypted DBA credential. 
-It is not recommended to use OMVS to complete this step because the password is visible on the screen in plain text. Use SSH to perform this step.
-
-/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
-
-For more information, refer to Updating UMS DBA user credentials.
-
-
-/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
-IZPPI0079I - Start of izp-encrypt-dba.sh
-IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
-IZP Credential Encryption Utility
-Using PKCS #11 token label: IZPTOK
-Using path to PKCS #11 library file: /usr/lpp/pkcs11/lib/csnpca64.so
-IZPSC0003E - Fail to create dba configuration, reason 'Invalid Token Label : IZPTOK'.Encryption Failed
-IZPPI0202E - Could not encrypt credentials. Refer to the log file: /tmp/izp-n-20250704211308.log.
-IZPPI0080I - End of izp-encrypt-dba.sh. Return code 1
-
-===
-
-run jobs IZPD2R and IZPD3R.
-Then retry Encrypt DBA credentials.
-When prompted for IZPDBA password - enter l0nep1ne
-
+```
 IBMUSER:/u/ibmuser: >/usr/lpp/IBM/izp/v1r2m0/bin/ums/opt/bin/izp-encrypt-dba.sh DAFUMS.IZP.I1
 IZPPI0079I - Start of izp-encrypt-dba.sh
 IZPPI0123I - IBM Unified Management Server for z/OS version 1.2.0.9
@@ -446,16 +414,11 @@ Reenter the password:
 Supplied Credentials encrypted
 IZPPI0080I - End of izp-encrypt-dba.sh. Return code 0
 IBMUSER:/u/ibmuser: >
+```
 
+You can eyeball the Encrypted Credentials Data Set: {components.izp.dataset.dbaEncryption} = DAFUMS.IZP.I1.DBA.ENCRYPT.
 
-
->>>>>>>>>>>>>> EXTRA
-Create IZPDBA based on IBMUSER ( to get SYSADM etc... )
-Set a password for IZPDBA (adcdmst)
-logged on tso - changed pwd to COCACOLA
-deleted DAFUMS.IZP.I1.DBA.ENCRYPT
-re-allocated DAFUMS.IZP.I1.DBA.ENCRYPT
-Re-Ran Encrypt DBA credentials.
+![db2_encrypt](/images/dba_encrypt.jpg)
 
 
 
