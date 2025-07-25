@@ -67,7 +67,9 @@ UMS and DB2 Administration Foundation now requires a security model with SAF aut
 6. RACF Class IZP is used to control UMS applicaton roles and function security.
 7. RACF Class CRYPTOZ is used for secure storage and handling of encryption keys/tokens.
 
-A more detailed explanation of the security architecture for UMS is available in the knowledge center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
+The diagram below represents how JWT tokens are used to support sessions. A more detailed explanation of the security architecture for UMS is available in the knowledge center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
+
+![izp_tokens](/images/izp_tokens.jpg)
 
 ## 3 Edit the ZWEYAML parmlib member
 
