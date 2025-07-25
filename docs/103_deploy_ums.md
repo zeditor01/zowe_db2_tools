@@ -23,11 +23,11 @@ This page is a worked example of the following steps to deploy UMS into Zowe.
 ## Notes on using this page.
 This page is a simple worked example. It aims to communicate the key concepts and actions to experienced systems programmers. A more detailed audit trail of steps is available in [this supplementary page](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/x103_deploy_ums_tasks.md) 
 
-## 2.1 install UMS and DAF code. (it makes sense to install DAF and UMS together).
+## 1 install UMS and DAF code. (it makes sense to install DAF and UMS together).
 
-Order Unified Management Server and Db2 Admin Foundation together on ShopZ.
+The first task is to order Unified Management Server and Db2 Admin Foundation together on ShopZ. The PIDs to order are shown below.
+
 ![order_ums_daf](/images/order_ums_daf.jpg)
-
 
 
 Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up with the following datasets after the SMPE installation.
@@ -41,30 +41,43 @@ Follow the standard PSI installation workflows. My HLQ was "DAFUMS". I ended up 
 ![dafums_datasets](/images/dafums_datasets.jpg)
 
 
-You will be required to permanently mount two ZFS filesystems as follows.
+The PSI workflows will create the USS paths and dynamically mount them. You will be required to permanently mount two ZFS filesystems as follows.
 
 * UMS provides a ZFS called DAFUMS.OMVS.SIZPROOT - to mounted at /usr/lpp/IBM/izp/v1r2m0/bin
 * DAF provides a ZFS called DAFUMS.OMVS.SAFXROOT - mounted at /usr/lpp/IBM/afx/v1r2m0/bin
+
+![izpafx_mounts](/images/izpafx_mounts.jpg)
 
 UMS Zowe plug-ins require Program Control authorization. In order to tag the files with this bit, the SMP/E install user requires BPX.FILEATTR.PROGCTL permission on the system, which can be achieved with the following command from a USS shell.
 
 ```IBMUSER:/Z31A/usr/lpp/IBM/izp/v1r2m0/bin: >extattr +p */zssServer/lib/*```
 
 
+## 2 Understanding the UMS security model
+UMS and DB2 Administration Foundation now requires a security model with SAF authentication (useSAFOnly=true). This means that 
+1. all users of UMS & DAF need to be authenticated against SAF ( RACF in this example ).
+2. a powerful DBA ID is defined to perform all authorised Db2 tasks on behalf of authenticated users. 
+3. The DBA userid is shielded from human use, and can be authenticated  by a digital certificate.
+4. A Profile Qualifier is prepended to SAF profile checks to determine team membership and role assignment.
+5. UMS uses Java Web Tokens (JWT) to enable secure single-signon sessions. JWTs encapsulate identity and authentication data in a JSON structure, and are cryptographically signed.
+6. RACF Class IZP is used to control UMS applicaton roles and function security.
+7. RACF Class CRYPTOZ is used for secure storage and handling of encryption keys/tokens.
 
-## 2.2 edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
+A more detailed explanation of the security architecture for UMS is available in the knowledge center [here](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=server-security-ums-zos)
+
+## 3 Edit the ZWEYAML parmlib member
 
 The heart of the configuration of Zowe was a YAML file (zowe.yaml) which tied together all the elements of the zowe configuration.
 
-Unified Management Server follows the same pattern. It also uses a set of 3 YAML files to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. These 3 YAML files are to be created as 3 members of a PDS. Editing this YAML file correctly is critical.
+Similarly, the heart of the configuration of Unified Management Server is it's YAML files. It uses a set of 3 YAML files (ZWEYAML, IZPDB2PM, IZPDAFPM) in the instance PARMLIB ( DAFUMS.IZP.I1.PARMLIB ) to tie together all the elements of the UMS configuration, including reference to the Zowe environment that UMS will be installed in. These 3 YAML files are to be created as 3 members of a PDS. Editing this YAML file correctly is critical.
 
 Choose a naming standard for the datasets of the UMS instance. My SMPE installation created the UMS installation datasets under ```DAFUMS.IZP.**``` so I decided to create my instance datasets under the HLQ ```DAFUMS.IZP.I1.**```
 
-Create a customisated copy of the installation SAMPLLIB ```DAFUMS.IZP.SIZPSAMP``` at ```DAFUMS.IZP.I1.SIZPSAMP``` and copy all 6 members over. (IZPALOPL, IZPCPYML, IZPCPYM2, IZPGENER, IZPMIGRA, IZPSYNCY ).
+Create a customisated copy of the installation SAMPLLIB (DAFUMS.IZP.SIZPSAMP) at (DAFUMS.IZP.I1.SIZPSAMP) and copy all 6 members over. (IZPALOPL, IZPCPYML, IZPCPYM2, IZPGENER, IZPMIGRA, IZPSYNCY ).
 
-Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... which Allocates DAFUMS.IZP.I1.PARMLIB  
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPALOPL) ... to Allocate DAFUMS.IZP.I1.PARMLIB  
 
-Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... Creates the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
+Edit and submit DAFUMS.IZP.I1.SIZPSAMP(IZPCPYML) ... to create the ZWEYAML default PARMLIB member (to be edited).... DAFUMS.IZP.I1.PARMLIB(ZWEYAML)
 
 Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML). This is a very long and verbose dataset with incredibly strict syntax standards. An excerpt for the lines that I edited in included below, with line-numbered notes to explain the logic for my edits.
 
@@ -198,16 +211,15 @@ Edit DAFUMS.IZP.I1.PARMLIB(ZWEYAML). This is a very long and verbose dataset wit
 
 Once you are satisfied that the ZWEYAML is correctly configured, it can be used to generate all the installation workflow jobs with the desired customisations.
 
-## 2.3 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
+## 4 Execute the UMS installation workflows (including integration of zowe.yaml with UMS ZWEYAML.
 
-### Stop Zowe
+### Stop Zowe Now
+These installation workflow steps will affect Zowe, which should be stopped before proceeding.
 
-Could wait till later.
-
-### 2.3.1 Generate the customised workflow jobs.
+### 4.1 Generate the customised workflow jobs.
 Customize and Run DAFUMS.IZP.I1.SIZPSAMP(IZPGENER) to generate the customised workflow jobs.
 
-IZPGENER results in adding ENVIRON and JCLLIB libraries
+IZPGENER results in adding ENVIRON and JCLLIB libraries. The JCLLIB PDS contains the customised installation jobs. The ENVIRON PDS stored environment configuration details.
 ```
 'DAFUMS.IZP.I1.ENVIRON' 
 'DAFUMS.IZP.I1.JCLLIB'  
@@ -215,87 +227,108 @@ IZPGENER results in adding ENVIRON and JCLLIB libraries
 'DAFUMS.IZP.I1.SIZPSAMP'
 ```
 
-Dataset 'DAFUMS.IZP.I1.JCLLIB' contains all the JCL's that may ( or may not ) need to be run. You need to refer to [this page](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=references-list-jcllib-members) to decide which jobs need to be run for this instance.
+Dataset 'DAFUMS.IZP.I1.JCLLIB' contains all the JCL's that may ( or may not ) need to be run. Each job is supplied with a verification job to check the outcome. You need to refer to [this page](https://www.ibm.com/docs/en/umsfz/1.2.0?topic=references-list-jcllib-members) to decide which jobs need to be run for this instance.
 
 In this worked example, the sequence of jobs that I chose to run were as follows.
 
 ```
-IZPA1.... N/A - allocates TEAMLIST
-IZPA1V... verify  
-IZPA2.... N/A - allocates USERLIST    
-IZPA2V... verify    
-IZPA3.... YES - allocates IZP.CUST.DBA.ENCRYPT   
-IZPA3V... verify  
-IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly.  
-IZPB0VR.. verify  
-IZPB1R... YES - Create IZP class and add to the CDT.  
-IZPB1VR.. verify  
-IZPB2R... YES - Add security role profiles to the IZP class.   
-IZPB2VR.. verify  
+IZPA1.... N/A - allocates TEAMLIST, which is no longer used for access control because UMS now requires useSAFOnly: true
+IZPA1V... verification job
+
+IZPA2.... N/A - allocates USERLIST, which is no longer used for access control because UMS now requires useSAFOnly: true    
+IZPA2V... verification job
+  
+IZPA3.... Required - allocates IZP.CUST.DBA.ENCRYPT, which is used to store the encryption token for the DBA id.  
+IZPA3V... verification job
+ 
+IZPB0R... N/A - Create a new group for surrogate users. This is not required for useSAFOnly: true   
+IZPB0VR.. verification job
+   
+IZPB1R... Required - Create IZP class and add to the CDT.  
+IZPB1VR.. verification job
+    
+IZPB2R... Required - Add security role profiles to the IZP class.   
+IZPB2VR.. verification job
+   
 IZPB3R... N/A - Create generic profiles to secure userList and teamList data sets. This is not required if useSAFOnly=true.  
-IZPB3VR.. verify  
-IZPB4R... YES - Create RACF IZP resource profiles to define the UMS users and their roles.  
-IZPB4VR.. verify  
+IZPB3VR.. verification job
+   
+IZPB4R... Required - Create RACF IZP resource profiles to define the UMS users and their roles.  
+IZPB4VR.. verification job
+   
 IZPC1R... N/A - Add surrogate users to impersonate when accessing the userList and teamList data sets during runtime. This is not required if useSAFOnly=true.  
-IZPC1VR.. verify  
+IZPC1VR.. verification job
+   
 IZPC2R... N/A - Grant surrogate user access to the userList and teamList profiles. This is not required if useSAFOnly=true.  
-IZPC2VR.. verify  
-IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
-IZPD1VR.. verify  
+IZPC2VR.. verification job
+   
+IZPD1R... Required - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
+IZPD1VR.. verification job
+   
 IZPD2R... N/A - Grant system programmer and started task access to PKCS #11 resources. 
-IZPD2VR.. verify  
+IZPD2VR.. verification job
+   
 IZPD3R... N/A - Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3VR.. verify  
-IZPD4R... YES - Add a new user to serve as the DBA user ID.  
-IZPD4VR.. verify  
-IZPD5R... YES - Connect the DBA user ID to the IZUUSER group for z/OSMF.  
-IZPD5VR.. verify  
-IZPD6R... YES - Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.   
-IZPD6VR.. verify  
-IZPD7R... YES - Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.   
-IZPD7VR.. verify  
-IZPSTEPL. YES - concatenate datasets in PROCLIB member
+IZPD3VR.. verification job
+   
+IZPD4R... Required - Add a new user to serve as the DBA user ID.  
+IZPD4VR.. verification job
+   
+IZPD5R... Required - Connect the DBA user ID to the IZUUSER group for z/OSMF.  
+IZPD5VR.. verification job
+   
+IZPD6R... Required - Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.   
+IZPD6VR.. verification job
+   
+IZPD7R... Required - Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.   
+IZPD7VR.. verification job
+   
+IZPSTEPL. Required - concatenate datasets in PROCLIB member
+
 IZPUSRMD. N/A - If useSafOnly is set to true or you are migrating from UMS 1.1, do not submit the IZPUSRMD JCL.
-izp-encrypt-dba.sh
-IZPIPLUG. YES - Install Zowe plugins using the zwe command.
-IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+
+izp-encrypt-dba.sh ... Required - 
+
+IZPIPLUG. Required - Install Zowe plugins using the zwe command.
+
+IZPEXPIN. Required - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 ```
 
 
-### 2.3.2 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
+### 4.2 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
 IZPA3
 IZPA3V
 
-### 2.3.3 Create IZP class and add to the CDT. 
+### 4.3 Create IZP class and add to the CDT. 
 IZPB1R... YES - Create IZP class and add to the CDT. (not convinced it worked with RALT commands all following the RDEF, without a refresh)
 IZPB1RV... YES - OK
 IZPB1RF... FIX - re-run RALTs - to be sure to be sure
 
-### 2.3.4 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
+### 4.4 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
 IZPB2R... YES - Add security role profiles to the IZP class.  
 IZPB2Rv
 
-### 2.3.5 Create RACF IZP resource profiles to define the UMS users and their roles.  
+### 4.5 Create RACF IZP resource profiles to define the UMS users and their roles.  
 IZPB4R
 IZPB4RV
 
-### 2.3.6 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
+### 4.6 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
 IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
 IZPD1RV
 
-### 2.3.7 Grant system programmer and started task access to PKCS #11 resources.
+### 4.7 Grant system programmer and started task access to PKCS #11 resources.
 IZPD2R... Grant system programmer and started task access to PKCS #11 resources. 
 IZPD2VR.. verify  
 
-### 2.3.8 Create the PKCS #11 token for UMS. This is not required if you are  
+### 4.8 Create the PKCS #11 token for UMS. This is not required if you are  
 IZPD3R... Create the PKCS #11 token for UMS. This is not required if you are  
 IZPD3VR.. verify  
 
-### 2.3.9 Add a new user to serve as the DBA user ID.  (IZPDBA)
+### 4.9 Add a new user to serve as the DBA user ID.  (IZPDBA)
 IZPD4R - yes with errors... you can ignore a non-zero return code.
 IZPD4RV - no records found in zSecure
 
-### 2.3.10 Connect IZPDBA to the IZUUSER group for z/OSMF
+### 4.10 Connect IZPDBA to the IZUUSER group for z/OSMF
 IZPD5R  
 IZPD5RV
 
@@ -304,7 +337,7 @@ CONNECT IZPDBA GROUP(IZUUSER)
 READY                         
 END                           
 
-### 2.3.11 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
+### 4.11 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
 IZPD6R
 IZPD6RV
 
@@ -315,12 +348,12 @@ ICH13003I OMVSAPPL NOT FOUND
 ***                         
 
 
-### 2.3.12 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
+### 4.12 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
 IZPD7R
 IZPD7RV
 
 
-### 2.3.13 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+### 4.13 IZPSTEPL. YES - concatenate datasets in PROCLIB member
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
@@ -346,7 +379,7 @@ IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0
 ******************************** BOTTOM OF DATA ********************************
 
 
-### 2.3.14 Encrypt DBA credentials.
+### 4.14 Encrypt DBA credentials.
 
 This step failed because I hadn't run jobs IZPD2R and IZPD3R.
 
@@ -413,7 +446,7 @@ Re-Ran Encrypt DBA credentials.
 
 
 
-### 2.3.15 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+### 4.15 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
 should find the base UMS plugins
 
 Job4398 - 
@@ -468,7 +501,7 @@ IZPPI0080I - End of izp-install-plugins.sh. Return code 0
 
 
 
-### 2.3.16 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+### 4.16 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 should find DAF
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
@@ -507,9 +540,9 @@ IZPPI0080I - End of izp-cp-exp.sh. Return code 0
 
 
 
-## 2.4 start the zowe server (and likely debug initial UMS startup problems).
+## 5 start the zowe server (and likely debug initial UMS startup problems).
 
-### 2.4.1 Prepare the PROCLIB member
+### 5.1 Prepare the PROCLIB member
 Edit the ZOWE Started Task - USER.Z31C.PROCLIB(ZWESLSTC)
 
 //ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'   
@@ -530,7 +563,7 @@ CONFIG=PARMLIB(DAFUMS.IZP.I1.PARMLIB(ZWEYAML))\
 /*                                              
 
 
-### 2.4.2 Start Zowe (including UMS)
+### 5.2 Start Zowe (including UMS)
 Start ZOWE
 S ZWESISTC,REUSASID=YES
 S ZWESLSTC
@@ -540,10 +573,10 @@ https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1
 
 
 
-## 2.5 test Zowe from a web browser.
+## 6 test Zowe from a web browser.
 
 
-### 2.5.1 Clean Start of UMS
+### 6.1 Clean Start of UMS
 
 Session Renewal Error
 05/07/2025, 13:42:23
@@ -580,7 +613,7 @@ IZPDAFPM
 
 
 
-### 2.5.2 Open DAF
+### 6.2 Open DAF
 
 Open UMS.
 Navigate to DAF.
