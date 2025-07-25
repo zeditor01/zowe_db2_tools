@@ -271,10 +271,10 @@ IZPC2VR.. verification job
 IZPD1R... Required - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.   
 IZPD1VR.. verification job
    
-IZPD2R... N/A - Grant system programmer and started task access to PKCS #11 resources. 
+IZPD2R... Required - Grant system programmer and started task access to PKCS #11 resources. 
 IZPD2VR.. verification job
    
-IZPD3R... N/A - Create the PKCS #11 token for UMS. This is not required if you are  
+IZPD3R... Required - Create the PKCS #11 token for UMS.   
 IZPD3VR.. verification job
    
 IZPD4R... Required - Add a new user to serve as the DBA user ID.  
@@ -301,65 +301,52 @@ IZPEXPIN. Required - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 ```
 
 
-### 4.2 Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
-IZPA3
-IZPA3V
+### 4.2 Execute the generated jobs for RACF-related resources ( IZPA3 through to IZPD7R )
 
-### 4.3 Create IZP class and add to the CDT. 
-IZPB1R... YES - Create IZP class and add to the CDT. (not convinced it worked with RALT commands all following the RDEF, without a refresh)
-IZPB1RV... YES - OK
-IZPB1RF... FIX - re-run RALTs - to be sure to be sure
-
-### 4.4 Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
-IZPB2R... YES - Add security role profiles to the IZP class.  
-IZPB2Rv
-
-### 4.5 Create RACF IZP resource profiles to define the UMS users and their roles.  
-IZPB4R
-IZPB4RV
-
-### 4.6 Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
-IZPD1R... YES - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS. 
-IZPD1RV
-
-### 4.7 Grant system programmer and started task access to PKCS #11 resources.
-IZPD2R... Grant system programmer and started task access to PKCS #11 resources. 
-IZPD2VR.. verify  
-
-### 4.8 Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3R... Create the PKCS #11 token for UMS. This is not required if you are  
-IZPD3VR.. verify  
-
-### 4.9 Add a new user to serve as the DBA user ID.  (IZPDBA)
-IZPD4R - yes with errors... you can ignore a non-zero return code.
-IZPD4RV - no records found in zSecure
-
-### 4.10 Connect IZPDBA to the IZUUSER group for z/OSMF
-IZPD5R  
-IZPD5RV
-
-READY                         
-CONNECT IZPDBA GROUP(IZUUSER) 
-READY                         
-END                           
-
-### 4.11 Grant the DBA user ID access to applications. If useSAFOnly=true, permits are not required for the surrogate users.  
-IZPD6R
-IZPD6RV
-
-n/a
-Note: If the APPL class is active and OMVSAPPL is defined, submit the job IZPD6R to permit IZPSRGSP, IZPSRGAD, DBA user ID, UMS user, and the Zowe STC user (ZWESLSTC) read access on the OMVSAPPL resource. 
-RLIST APPL OMVSAPPL
-ICH13003I OMVSAPPL NOT FOUND
-***                         
+These jobs are all customised from the IZPGENER job, and should be ready to execute. In each case, review JCL, submit and review output, and then run the associated verification job to confirm successful creation of the artefacts.
 
 
-### 4.12 Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache. 
-IZPD7R
-IZPD7RV
+
+* IZPA3 - Allocate DAFUMS.IZP.I1.DBA.ENCRYPT
+* IZPA3V - verifies it
+
+* IZPB1R - Create IZP class and add to the CDT
+* IZPB1RV - verifies it
+
+* IZPB2R - Add security role profiles to the IZP class.  (IZP.SUPER* and IZP.ADMIN*)
+* IZPB2RV - verifies it
+
+* IZPB4R - Create RACF IZP resource profiles to define the UMS users and their roles.  
+* IZPB4RV - verifies it
+
+* IZPD1R - Define CRYPTOZ resource profiles for the PKCS #11 token for UMS.
+* IZPD1RV - verifies it
+
+* IZPD2R - Grant system programmer and started task access to PKCS #11 resources.
+* IZPD2RV - verifies it
+
+* IZPD3R - Create the PKCS #11 token for UMS.
+* IZPD3RV - verifies it
+
+* IZPD4R - Add a new user to serve as the DBA user ID.  (IZPDBA)
+* IZPD4RV - verifies it
+
+The generated job IZPD4R is incomplete and fails. Suggest you follow whatever local jobs exist for creating RACF IDs.
+
+* IZPD5R - Connect IZPDBA to the IZUUSER group for z/OSMF
+* IZPD5RV - verifies it
+
+* IZPD6R -  Grant the DBA user ID access to applications.
+* IZPD6RV - verifies it
+
+* IZPD7R -  Creates function profiles in IZP class that are used when useSafOnly is enabled, which allow users to refresh the security cache.
+* IZPD7RV - verifies it
+                        
+
+                    
 
 
-### 4.13 IZPSTEPL. YES - concatenate datasets in PROCLIB member
+### 4.3 IZPSTEPL. YES - concatenate datasets in PROCLIB member
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04388  DSID   102 LINE 0       COLS 02- 81     
  COMMAND INPUT ===>                                            SCROLL ===> CSR  
@@ -385,7 +372,7 @@ IZPPI0080I - End of izp-concatenate-proclib.sh. Return code 0
 ******************************** BOTTOM OF DATA ********************************
 
 
-### 4.14 Encrypt DBA credentials.
+### 4.4 Encrypt DBA credentials.
 
 This step failed because I hadn't run jobs IZPD2R and IZPD3R.
 
@@ -452,7 +439,7 @@ Re-Ran Encrypt DBA credentials.
 
 
 
-### 4.15 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
+### 4.5 IZPIPLUG. YES - Install Zowe plugins using the zwe command.
 should find the base UMS plugins
 
 Job4398 - 
@@ -507,7 +494,7 @@ IZPPI0080I - End of izp-install-plugins.sh. Return code 0
 
 
 
-### 4.16 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
+### 4.6 IZPEXPIN. YES - LAUNCH THE IZP EXPERIENCE INTEGRATION SCRIPT
 should find DAF
 
  SDSF OUTPUT DISPLAY IZPCUST1 JOB04407  DSID   102 LINE 0       COLS 02- 81     
