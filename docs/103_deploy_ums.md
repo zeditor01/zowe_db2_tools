@@ -16,7 +16,8 @@ The components and dependencies of Unified Management Server are illustrated in 
 
 ![izp_components](/images/izp_components.jpg)
 
-This page is a worked example of the following steps to deploy UMS into Zowe.
+# Five Steps to Deploy UMS
+This page is a worked example of the following 5 steps to deploy UMS into Zowe.
 1. install UMS and DAF code. (it makes sense to install DAF and UMS together).
 2. edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
 3. Execute the UMS installation workflows (setting up RACF artefacts, and integrating ZWEYAML with zowe.yaml).
