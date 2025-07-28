@@ -16,7 +16,8 @@ The components and dependencies of Unified Management Server are illustrated in 
 
 ![izp_components](/images/izp_components.jpg)
 
-This page is a worked example of the following steps to deploy UMS into Zowe.
+# Five Steps to Deploy UMS
+This page is a worked example of the following 5 steps to deploy UMS into Zowe.
 1. install UMS and DAF code. (it makes sense to install DAF and UMS together).
 2. edit ZWEYAML parmlib member to configure UMS to integrate with z/OS and Zowe'
 3. Execute the UMS installation workflows (setting up RACF artefacts, and integrating ZWEYAML with zowe.yaml).
@@ -511,6 +512,7 @@ That should be it ... if we have executed all these steps correctly, Zowe should
 ### 5.1 Prepare the PROCLIB member
 Edit the ZOWE Started Task - USER.Z31C.PROCLIB(ZWESLSTC)
 
+```
 //ZWESLSTC  PROC RGN=0M,HAINST='__ha_instance_id__'   
 //ZWELNCH  EXEC PGM=ZWELNCH,REGION=&RGN,TIME=NOLIMIT,                  
 // PARM='ENVAR(_CEE_ENVFILE=DD:STDENV),POSIX(ON)/&HAINST.'             
@@ -533,14 +535,14 @@ CONFIG=PARMLIB(DAFUMS.IZP.I1.PARMLIB(ZWEYAML))\
 Start ZOWE
 S ZWESISTC,REUSASID=YES
 S ZWESLSTC
-
+```
 
 
 
 
 
 ## 6 test Zowe from a web browser.
-When I first tested Zowe after installing UMS, I encountered problems
+When I first tested Zowe after installing UMS, I encountered problems when I logged into Zowe at https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
 
 I waited for Zowe startup to finish, before logging on to Zowe as normal. As soon as I logged onto Zowe, I encountered a Popup window reporting a session renewal error.
 
@@ -557,108 +559,81 @@ These messages gave very little context and detail about the problem. They force
 
 ### 6.1 Clean Start of UMS
 
+Resolving problems is the same as any other started task on z/OS : find the joblog, review warnings and errors, and correct whatever causes the,
 
+Eventually I found where the UMS logs were. ( /apps/zowe/v20/log or SDSF ZWESLSTC job output ). ZOWE logs and UMS logs are shared.
 
-
-https://s0w1.dal-ebis.ihost.com:7554/zlux/ui/v1 
-
-Session Renewal Error
-05/07/2025, 13:42:23
-Session could not be renewed. Logout will occur unless renewed. Click here to retry.
-
-Open UMS ...
-Error Request failed with status code 401
-
-
-Eventually I found where the UMS logs were. ( /apps/zowe/v20/log or SDSF ZWESLSTC job output )
-ZOWE logs and UMS logs are shared.
-
-These logs - at the very end when I logon to ZOWE show an error
+These logs - at the very end when I logon to ZOWE showed an error
+```
 <ZWED:83952169> ZWESVUSR WARN (com.rs.auth.db2Auth,db2Auth.js:153) UMS login: connect ECONNREFUSED 192.168.1.171:12023
+```
 
-ECONNREFUSED means a problem with TCPIP address/port or firewall usually.
-Or perhaps something as basic as UMS not started.
+ECONNREFUSED means a problem with TCPIP address/port or firewall usually. I know that my TCPIP network on my ZPDT is completely open, so I guessed that it was something more basic - such as the UMS server not actually being started ?
+
 
 Hidden within the zowe/ums output is confirmation that UMS did not start
+```
 IZPPI0205E - Validation unsuccessful, it returned code 4 for DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
 <ZWELNCH:83951980> ZWESVUSR ERROR ZWEL0038E failed to restart component izp, max retries reached
-
+```
 
 So, given that the reason for UMS not starting looks likely that DAFUMS.IZP.I1.PARMLIB(IZPDB2PM) prevented successful validation,
 I edited it, and entered the HLQs for IZP and AFX/ADM
 
 
---> Conclusion: can't add a new experience until it is properly configured
-Configure more advanced DB2 Admin Tool experiences. ( LIST THEM )
-Edit the additional YAML files to locate the DB2AOC libraries
-IZPDB2PM
-IZPDAFPM
+### Lesson Learnt
+When you add a new experience, if it isn't configured correctly it may stop UMS from comming up.
 
 
 
 
-### 6.2 Open DAF
 
-Open UMS.
-Navigate to DAF.
+### 6.2 Editing IZPDB2PM
 
-Discover DALLASD
+The fix for my scenario was to edit DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
 
-Register DALLASD
->>> Lots of errors.
->>> SSL connection 5046 - failed - need to setup trust from ZOWE/UMS to Db2 ???
->>> non-secure 5045 - failed - no SYSADM grant ; DSNTEP2 DDL connection failure ( APPLCOMPATs etc... )
->>> Rebind Db2 Connect Packages ; Rebind DSNTEP2
->>> Still failing... try re-IPL and fresh system
->>> Aha - when registering the DBDG subsystem, plan name for DSNTEP2 is DSNTEP13
+This member identifies the libraries used to provide DB2 Administration and Catalog Browsing functions. If you don't provide valid values for the parameters on line 160, 162, 173 and 176 in the screenshot below, UMS will fail to start.
 
-Basic Catalog Navigation.
-All food
+![izpdb2pm](/images/izpdb2pm.jpg)
 
-Gen DDL - fails.
-SQLCODE -444 : Procedure DBDGDDL not found.
-Funny - Db2 Admin tool DDL GEN invoked DBDGDDL in DBGENV1 without fail.
-But DAF does the same thing - and Load Module Not found
+If you don't have DB2 Administration Tool (and APAR PH55177) installed then you should just point to the UMS and DAF libraries, as follows
 
-I was trying with usig Db2 Admin Tool "HLQ IZP_DB2_ADB_PREFIX: SADB" in DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
-But I notice there are two Procedures in SYSROUTINES - One bound in 2022, the other bound today.
-The DAF version of DDL gen will only generate DDL for a single object at a time.
-Lets see if that will work ?
+```
+000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                                   
+000161 # Sample value (recommended): SIZP                                               
+000162 IZP_DB2_USR_PREFIX: SIZP                                                         
+...                                                   
+000173 IZP_DB2_ADB_HLQ: DAFUMS.AFX                                                          
+000174 # Sample value (if using IBM Admin Tool): SADB                                   
+000175 # Sample value (otherwise, using Admin Foundation files) : SAFX                  
+000176 IZP_DB2_ADB_PREFIX: SAFX                                                         
+```
+But since I do have have DB2 Administration Tool (and APAR PH55177) installed, I am pointing to UMS and Db2 Admin Tool libraries, as follows
 
-DAFUMS.IZP.I1.PARMLIB(IZPDB2PM)
-000153 # Required Parameters                                                   
-000154 # High-level qualifier (HLQ) and prefix for user data sets created and  
-000155 # written to during various JCL Jobs execution. Eg, using the sample val
-000156 # registring a Db2 subsystem will write to HLQ.IZP.DSN.SIZPTLIB         
-000157 # It is recommended to use the UMS read/write HLQ specified by          
-000158 # components.izp.dataset.hlq in ZWEYAML.                                
-000159 # Sample value: HLQ.IZP.DSN                                             
-000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                          
-000161 # Sample value (recommended): SIZP                                      
-000162 IZP_DB2_USR_PREFIX: SIZP                                                
-000163                                                                         
-000164 # Required Parameters                                                   
-000165 # High-level qualifier (HLQ) and prefix for IBM Db2 Administration Tool 
-000166 # related data sets to be concatenated in various generated JCL.        
-000167 # If using IBM Db2 Administration Tool for z/OS, specify HLQ where      
-000168 # ADB functionality was SMPE installed.                                 
-000169 # Otherwise enter the UMS read/write HLQ specified by                   
-000170 # components.izp.dataset.hlq in ZWEYAML.                                
-000171 # Sample value: HLQ.ADB.DSN                                             
-000172 # Sample value: HLQ.IZP.DSN                                             
-000173 IZP_DB2_ADB_HLQ: ADBD10                                                 
-000174 # Sample value (if using IBM Admin Tool): SADB                          
-000175 # Sample value (otherwise, using Admin Foundation files) : SAFX         
-000176 IZP_DB2_ADB_PREFIX: SAFX                                                
-
-recycle ZOWE
-Retest
+```
+000160 IZP_DB2_USR_HLQ: DAFUMS.IZP.I1                                                   
+000161 # Sample value (recommended): SIZP                                               
+000162 IZP_DB2_USR_PREFIX: SIZP                                                         
+...                                                   
+000173 IZP_DB2_ADB_HLQ: ADBD10                                                          
+000174 # Sample value (if using IBM Admin Tool): SADB                                   
+000175 # Sample value (otherwise, using Admin Foundation files) : SAFX                  
+000176 IZP_DB2_ADB_PREFIX: SADB                                                         
+```
 
 
-Config Steps
-https://www.ibm.com/docs/en/umsfz/1.2.0?topic=installation-installing-db2-administration-foundation
+### Re-Testing
 
-Create a WLM environment by using the template in JCLLIB(WLMPROC) that points to the load libraries in <HLQ>.SIZPLLIB.
+Stop and Start zowe after resolving this and any other problems until you get a message saying that UMS is started, like the one below
+
+```
+IZPPI0006I - IBM Unified Management Server is started. (pid=33620487)
+```
+
+Now you can logon to Zowe, start UMS, register a Db2 Subsystem to access, and start using Db2 Administration Foundation. There steps are documented in the next section.
+
+
+
 
 
 
