@@ -10,8 +10,22 @@ This page describes using Db2 Admin Foundation, and accessing the underlying fun
 
 ![stage3a](/images/zowe_adm.jpg)
 
+ccc
+
+![dafsetup01](/images/dafsetup01.jpg)
 
 
+ccc
+
+![dafsetup02](/images/dafsetup02.jpg)
+
+ccc
+
+![regdb201](/images/regdb201.jpg)
+
+ccc
+
+![regdb202](/images/regdb202.jpg)
 
 ```
 Open UMS.
