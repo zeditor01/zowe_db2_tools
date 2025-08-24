@@ -1,0 +1,104 @@
+//IUZOSMF JOB (FB3),'ZOSMF PSI',CLASS=A,MSGCLASS=H,
+//       NOTIFY=&SYSUID,REGION=0M,TIME=1440
+//*      TYPRUN=HOLD
+//*
+/*JOBPARM SYSAFF=S0W1
+//JOBLIB   DD DSN=QWT.CPAC.SCPPLOAD,
+//            DISP=SHR
+//*
+//*******************************************************************
+//* This step will run IEBUPDTE to create a BPXPRMDB member in
+//* your PARMLIB dataset with the new filesystem structure.
+//*******************************************************************
+//BPXCS01 EXEC PGM=IEBUPDTE,COND=(4000,LT)
+//SYSPRINT DD SYSOUT=*
+//SYSUT1   DD DSN=QWT.CPAC.DB2.PARMLIB,
+//            DISP=SHR
+//SYSUT2   DD DSN=QWT.CPAC.DB2.PARMLIB,
+//            DISP=SHR
+//SYSIN    DD   DATA,DLM='%%'
+./    ADD  NAME=BPXPRMDB,LIST=ALL
+/*******************************************************************/
+/*  This member, as specified in IEASYS00, will cause Unix System  */
+/*  Services to come up with the filesystem  mounted.              */
+/*******************************************************************/
+MOUNT FILESYSTEM
+('QWT.OMVS.SAFXROOT')
+ MOUNTPOINT(
+'/usr/lpp/IBM/afx/v1r2m0/bin')
+ TYPE(ZFS) MODE(RDWR)
+MOUNT FILESYSTEM
+('QWT.OMVS.SDSNROT2')
+ MOUNTPOINT(
+'/usr/lpp/IBM/db2tms/v2r1')
+ TYPE(ZFS) MODE(RDWR)
+MOUNT FILESYSTEM
+('QWT.OMVS.SGWROOT')
+ MOUNTPOINT(
+'/usr/lpp/IBM/qwtz')
+ TYPE(ZFS) MODE(RDWR)
+%%
+//*
+//NOTOK   EXEC PGM=CPPMAXRC,COND=((0,GE,BPXCS01),(4000,LT))
+//*
+//*******************************************************************
+//* This step will create the mountpoint directory used in deployment
+//*******************************************************************
+//MKCOS1  EXEC PGM=BPXBATCH,COND=(4000,LT)
+//STDPARM DD *
+sh
+mkdir -p 755
+/usr/lpp/IBM/afx/v1r2m0/bin
+/*
+//STDOUT DD SYSOUT=*
+//STDERR DD SYSOUT=*
+//*
+//*******************************************************************
+//* This step will create the mountpoint directory used in deployment
+//*******************************************************************
+//MKCOS2  EXEC PGM=BPXBATCH,COND=(4000,LT)
+//STDPARM DD *
+sh
+mkdir -p 755
+/usr/lpp/IBM/db2tms/v2r1
+/*
+//STDOUT DD SYSOUT=*
+//STDERR DD SYSOUT=*
+//*
+//*******************************************************************
+//* This step will create the mountpoint directory used in deployment
+//*******************************************************************
+//MKCOS3  EXEC PGM=BPXBATCH,COND=(4000,LT)
+//STDPARM DD *
+sh
+mkdir -p 755
+/usr/lpp/IBM/qwtz
+/*
+//STDOUT DD SYSOUT=*
+//STDERR DD SYSOUT=*
+//*
+//*******************************************************************
+//* This step will mount the SMP/E filesystem dataset
+//*******************************************************************
+//STEP1   EXEC PGM=IKJEFT1B,COND=(4000,LT)
+//SYSTSPRT DD   SYSOUT=*
+//SYSTSIN  DD   *
+  PROF MSGID WTPMSG
+MOUNT FILESYSTEM +
+('QWT.OMVS.SAFXROOT') +
+MOUNTPOINT(+
+'/usr/lpp/IBM/afx/v1r2m0/bin') +
+TYPE(ZFS) MODE(RDWR)
+MOUNT FILESYSTEM +
+('QWT.OMVS.SDSNROT2') +
+MOUNTPOINT(+
+'/usr/lpp/IBM/db2tms/v2r1') +
+TYPE(ZFS) MODE(RDWR)
+MOUNT FILESYSTEM +
+('QWT.OMVS.SGWROOT') +
+MOUNTPOINT(+
+'/usr/lpp/IBM/qwtz') +
+TYPE(ZFS) MODE(RDWR)
+/*
+//NOTOK   EXEC PGM=CPPMAXRC,COND=((0,GE,STEP1),(4000,LT))
+//*
