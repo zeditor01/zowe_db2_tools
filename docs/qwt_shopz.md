@@ -1,6 +1,6 @@
 # QWT ShopZ
 
-add words
+add words and more
 
 ![shopz_qwt_01](/images/shopz_qwt_01.jpg)
 
