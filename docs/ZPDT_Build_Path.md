@@ -23,22 +23,35 @@ The Excerises are structured as follows
 * Assumed z/OS deployed inventory
 
 ## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
-* Download Query Workload Tuner Portable Software Instance from ShopZ
-* Deploy Query Workload Tuner Portable Software Instance to your z/OS system
-* Customise Query Workload Tuner, to create an operational Liberty Server for it
-* Installation Verification Testing of Query Workload Tuner
+* Download QWT Portable Software Instance from ShopZ
+* Deploy QWT Portable Software Instance to your z/OS system
+* Customise QWT, to create an operational Liberty Server for it
+* Installation Verification Testing of QWT
 * Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
-
+* Download UMS and DAF Portable Software Instance from ShopZ
+* Deploy UMS and DAF Portable Software Instance to your z/OS system
+* Customise UMS and DAF, to create an operational Liberty Server for it
+* Installation Verification Testing of UMS and DAF
+  
 ## Step 4: Configure DAF to utilise the Db2 Administration Tool.
+* Check the pre-requisite maintenance for Db2 Administration Tool.
+* Configure access to the integration load libraries
+* Test the additional function from DAF
 
 ## Step 5: Configure DAF to utilise SQL Tuning Services
+* Configure DAF to access QWT
+* Test the invocation of SQL Tuning Services from DAF.
 
-Deploy Db2 Automation Experience
+## Step 6: Deploy Db2 Automation Experience
+* Download DAE Portable Software Instance from ShopZ
+* Deploy DAE Portable Software Instance to your z/OS system
+* Customise DAE, to create an operational Liberty Server for it
+* Installation Verification Testing of DAE
 
-Configure DAF to utilise Db2 Automation Experience
+## Step 7: Configure DAF to utilise Db2 Automation Experience
 
-Deploy Db2 Devops Experience
+# Step 8: Deploy Db2 Devops Experience
 
-Configure DAF to utilise Db2 Devops Experience
+# Step 9: Configure DAF to utilise Db2 Devops Experience
