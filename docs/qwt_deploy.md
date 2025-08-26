@@ -113,20 +113,82 @@ From the main checklist, select "Define job settings".
 Review the job settings. Note the JCL dataset name. The JCL deployment jobs will be stored here.
 
 ![deploy_qwt_22](/images/deploy_qwt_22.jpg)
+
+From the main checklist, select "Submit deployment jobs".
+
 ![deploy_qwt_23](/images/deploy_qwt_23.jpg)
+
+We are presented with 5 jobs that required to deploy the PSI. We need to review and execute each in turn.
+
+
 ![deploy_qwt_24](/images/deploy_qwt_24.jpg)
+
+Job #1 (IZUD01RA) is optional. It allows us to setup RACF dataset protections. The job would need to be edited to assign the correct groups to assign to the profiles and the correct IDs to have permissions. We can review the job either by clicking on the Job in the z/OSMF window, or by opening the job in the JCL dataset (IBMUSER.DM.D250820.T173424.CNTL). Open it in the ISPF editor for best text markup and highlighting.
+
 ![deploy_qwt_25](/images/deploy_qwt_25.jpg)
+
+Being a ZPDT demo system, the RACF protection of datasets is not important. Hence, from the z/OSMF workflow I select "Override Complete" from  he Actions pulldown.
+
 ![deploy_qwt_26](/images/deploy_qwt_26.jpg)
+
+With Job #1 marked as "override complete", I select Job #2 (Unzip datasets), and "Submit" from the Actions pulldown.
+
 ![deploy_qwt_27](/images/deploy_qwt_27.jpg)
+
+I see it running...
+
 ![deploy_qwt_28](/images/deploy_qwt_28.jpg)
+
+This job failed unexpectedly. I decided to leave this job failure in the worked example as an illustration of what to do when the push-button workflows fail.
+
+
 ![deploy_qwt_29](/images/deploy_qwt_29.jpg)
 
+First thing I do is to review the job, to see what it is doing in detail. I open IBMUSER.DM.D250820.T173424.CNTL(IZUX02UZ) and see that it is defining a VSAM cluster for a ZFS, creating a directory (/tmp/izud-IBMUSER-T2325892) and mounting the ZFS there, so that it can run the Unzip job.
+
+Next thing I do is go to SDSF to see the error messages, so that I can diagnose and resolve the problem.
+
+# Grab a screenshot of the ZFS failure.
+
+Strange thing is that I can't see any errors to diagnose. All that happens is that the Unzip step fails because the ZFS path is not present. There are no error messages suggesting that the previous steps to mount the ZFS have failed. Very strange.
+
+When you experience problems that you don't understand, step back, take a cup of coffee or tea, and allow the explanation to reveal itself to you whilst you are relaxing.
+
+With caffeine entering my body, I came up with the theory that even though the preceeding steps had return code 0, they cannot have been executed. looking at the SDSF output again, I realised that there is an absence of messages saying anything at all. And the echo commands should have written those messages to the job output. So perhaps the step exited without doing anything.
+
+Eventually I realised that my mate Ben had "improved" the z/OS image I was using by upgrading the default USS shell to the bash shell. Hence, the very first command to enter the default shell failed, and the job step ended.
+
+Being a decent chap, my mate Ben provide a fix. He gave me some logic to place in the .profile script, to NOT use the bash shell when the calling process is BPXBATCH. This gives me the productivity of the bash shell for interactive work, but doesn't break batch jobs (such as PSI deployments). The moral of the story is the IBM motto : Th1nk.
+
+# Include a screenshop of .profile
+
+Once the Unzip job runs, you can see all the z/OS datasets that have been unzipped.
+
 ![deploy_qwt_30](/images/deploy_qwt_30.jpg)
+
+And we get a nice green "Complete" tick by Job #2.
+
+Now we run Job #3, to install the ZFS datasets.
+
 ![deploy_qwt_31](/images/deploy_qwt_31.jpg)
+
+And if we review the z/OS datasets again, we see that the QWT.OMVS.** datasets have been installed.
+
 ![deploy_qwt_32](/images/deploy_qwt_32.jpg)
+
+Now we can submit Job #4, which renames the datasets.
+
 ![deploy_qwt_33](/images/deploy_qwt_33.jpg)
+
+And we can see the datasets have lost their trailing .#
+
 ![deploy_qwt_34](/images/deploy_qwt_34.jpg)
+
+Now we can run Job #5 to update the SMPE CSI datasets
+
 ![deploy_qwt_35](/images/deploy_qwt_35.jpg)
+
+And we have 5 green ticks !
 ![deploy_qwt_36](/images/deploy_qwt_36.jpg)
 ![deploy_qwt_37](/images/deploy_qwt_37.jpg)
 ![deploy_qwt_38](/images/deploy_qwt_38.jpg)
