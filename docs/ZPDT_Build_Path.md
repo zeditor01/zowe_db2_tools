@@ -23,11 +23,11 @@ The Excerises are structured as follows
 1.2 Assumed z/OS deployed inventory<br>
 
 ## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
-1. [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
-2. [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)
-3. [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)
-4. [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)
-5. Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
+2.1 [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)<br>
+2.2 [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)<br>
+2.3 [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)<br>
+2.4 [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)<br>
+2.5 Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services<br>
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
 1. Download UMS and DAF Portable Software Instance from ShopZ
