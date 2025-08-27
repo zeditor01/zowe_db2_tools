@@ -19,15 +19,15 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 The Excerises are structured as follows
 
 ## Step 1: Understand the starting point ZPDT image.
-* Assumed ZPDT deployment
-* Assumed z/OS deployed inventory
+1. Assumed ZPDT deployment
+2. Assumed z/OS deployed inventory
 
 ## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
-* [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
-* [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)
-* [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)
-* [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)
-* Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
+1. [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
+2. [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)
+3. [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)
+4. [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)
+5. Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
 * Download UMS and DAF Portable Software Instance from ShopZ
