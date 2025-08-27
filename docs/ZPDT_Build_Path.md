@@ -23,7 +23,7 @@ The Excerises are structured as follows
 * Assumed z/OS deployed inventory
 
 ## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
-* Download QWT Portable Software Instance from ShopZ
+* [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
 * Deploy QWT Portable Software Instance to your z/OS system
 * Customise QWT, to create an operational Liberty Server for it
 * Installation Verification Testing of QWT
