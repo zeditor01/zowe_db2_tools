@@ -19,7 +19,7 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 The Excerises are structured as follows
 
 ## Step 1: Understand the starting point ZPDT image.
-1.1 Assumed ZPDT deployment  
+1.1 [Assumed ZPDT deployment](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/1.1%20Assumed%20ZPDT%20Deployment.md)  
 1.2 Assumed z/OS deployed inventory  
 
 ## Step 2: Deploy SQL Tuning Services (QWT) for Db2 z/OS.
