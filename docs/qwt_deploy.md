@@ -1,5 +1,6 @@
-# Query Workload Tuner : Deploy Portable Software Instance
+[home](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/ZPDT_Build_Path.md)
 
+# Query Workload Tuner : Deploy Portable Software Instance
 
 ## Scope of this page
 
