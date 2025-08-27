@@ -333,6 +333,9 @@ TYPE(ZFS) MODE(RDWR)
 
 ```
 
+That's all folks. QWT PSI is deployed. Next Step is Customisation.
+
+[home](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/ZPDT_Build_Path.md)
 
 
 
