@@ -7,7 +7,7 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 * It is a set of exercises aimed at giving practical experience of a complex deployment.
 
 ## Acronyms Used throughout this github repository.
-* Zowe is an open source framework that provides modern, cloud-like interfaces, tools, and mainframe environments, specifically on z/OS systems.
+* Zowe is an open source framework that provides modern, cloud-like interfaces, integration points and tools for z/OS systems.
 * QWT = Query Workload Tuner. (a licensed software product to help SQL tuning)
 * PSI = Portable Software Instance. (how we package software in ShopZ and z/OS)
 * UMS = Unified Management Server. (a software framework into which Db2 and IMS tools are deployed)
