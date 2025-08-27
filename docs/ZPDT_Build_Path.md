@@ -19,8 +19,8 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 The Excerises are structured as follows
 
 ## Step 1: Understand the starting point ZPDT image.
-1.1  Assumed ZPDT deployment
-1.2  Assumed z/OS deployed inventory
+1.1 Assumed ZPDT deployment<br>
+1.2 Assumed z/OS deployed inventory<br>
 
 ## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
 1. [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
