@@ -2,6 +2,13 @@
 
 # Query Workload Tuner : Shop Z Download
 
+## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
+1. [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md) <<< You are here.
+2. [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)
+3. [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)
+4. [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)
+5. Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
+
 ## Scope of this page
 
 This page provides a worked example of downloading the Portable Software Instance of Query Workload Tuner (QWT) from ShopZ download server to your z/OS image.
