@@ -13,7 +13,7 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 * UMS = Unified Management Server. (a software framework into which Db2 and IMS tools are deployed)
 * DAF = Db2 Administration Foundation. (the core Db2 z/OS experience for UMS)
 * DAE = Db2 Automation Experience. (the Db2 Experience for automation fo housekeeping tasks)
-* DEV = Db2 Devops Experience. (The Db2 Experience for provisioning Db2 database objects for CI/CD development projects)
+* Db2 Devops = Db2 Devops Experience. (The Db2 Experience for provisioning Db2 database objects for CI/CD development projects)
 * CI/CD = Continuous Integration and Continuous Delivery.
 
 The Excerises are structured as follows
@@ -51,7 +51,16 @@ The Excerises are structured as follows
 * Installation Verification Testing of DAE
 
 ## Step 7: Configure DAF to utilise Db2 Automation Experience
+* Configure DAF to access DAE
+* Test the management of housekeeping profiles from DAF
 
 # Step 8: Deploy Db2 Devops Experience
+* Download Db2 Devops Portable Software Instance from ShopZ
+* Deploy Db2 Devops Portable Software Instance to your z/OS system
+* Customise Db2 Devops, to enable provisioning of DDL objects for development
+* Installation Verification Testing of Db2 Devops
 
 # Step 9: Configure DAF to utilise Db2 Devops Experience
+* Not sure what's imvolved yet
+
+
