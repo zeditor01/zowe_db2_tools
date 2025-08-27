@@ -20,7 +20,7 @@ The Excerises are structured as follows
 
 ## Step 1: Understand the starting point ZPDT image.
 1.1 [Assumed ZPDT deployment](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/1.1%20Assumed%20ZPDT%20Deployment.md)  
-1.2 Assumed z/OS deployed inventory  
+1.2 [Assumed z/OS deployed inventory](https://github.com/zeditor01/zowe_db2_tools/tree/main/docs)  
 
 ## Step 2: Deploy SQL Tuning Services (QWT) for Db2 z/OS.
 2.1 [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.1%20QWT%20Download.md)<br>
