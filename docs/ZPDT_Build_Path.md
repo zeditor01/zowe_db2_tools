@@ -7,7 +7,7 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 * It is a set of exercises aimed at giving practical experience of a complex deployment.
 
 ## Acronyms Used throughout this github repository.
-* Zowe is an open source framework that provides modern, cloud-like interfaces, tools, and mainframe environments, specifically on z/OS systems.
+* Zowe is an open source framework that provides modern, cloud-like interfaces, integration points and tools for z/OS systems.
 * QWT = Query Workload Tuner. (a licensed software product to help SQL tuning)
 * PSI = Portable Software Instance. (how we package software in ShopZ and z/OS)
 * UMS = Unified Management Server. (a software framework into which Db2 and IMS tools are deployed)
@@ -19,48 +19,49 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 The Excerises are structured as follows
 
 ## Step 1: Understand the starting point ZPDT image.
-* Assumed ZPDT deployment
-* Assumed z/OS deployed inventory
+1.1 [Assumed ZPDT deployment](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/1.1%20Assumed%20ZPDT%20Deployment.md)  
+1.2 [Assumed z/OS deployed inventory](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/1.2%20Assumed%20zOS%20Inventory.md)  
 
-## Step 2: Deploy SQL Tuning Services for Db2 z/OS.
-* [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_shopz.md)
-* [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_deploy.md)
-* [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)
-* [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)
-* Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services
+## Step 2: Deploy SQL Tuning Services (QWT) for Db2 z/OS.
+2.1 [Download QWT Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.1%20QWT%20Download.md)<br>
+2.2 [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.2%20QWT%20PSI%20Deploy.md)<br>
+2.3 [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)<br>
+2.4 [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)<br>
+2.5 [Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.5%20QWT%20Usage%20from%20VSCODE.md)<br>
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
-* Download UMS and DAF Portable Software Instance from ShopZ
-* Deploy UMS and DAF Portable Software Instance to your z/OS system
-* Customise UMS and DAF, to create an operational Liberty Server for it
-* Installation Verification Testing of UMS and DAF
+1. Download UMS and DAF Portable Software Instance from ShopZ
+2. Deploy UMS and DAF Portable Software Instance to your z/OS system
+3. Customise UMS and DAF, to create an operational Liberty Server for it
+4. Installation Verification Testing of UMS and DAF
   
 ## Step 4: Configure DAF to utilise the Db2 Administration Tool.
-* Check the pre-requisite maintenance for Db2 Administration Tool.
-* Configure access to the integration load libraries
-* Test the additional function from DAF
+1. Check the pre-requisite maintenance for Db2 Administration Tool.
+2. Configure access to the integration load libraries
+3. Test the additional function from DAF
 
 ## Step 5: Configure DAF to utilise SQL Tuning Services
-* Configure DAF to access QWT
-* Test the invocation of SQL Tuning Services from DAF.
+1. Configure DAF to access QWT
+2. Test the invocation of SQL Tuning Services from DAF.
 
 ## Step 6: Deploy Db2 Automation Experience
-* Download DAE Portable Software Instance from ShopZ
-* Deploy DAE Portable Software Instance to your z/OS system
-* Customise DAE, to create an operational Liberty Server for it
-* Installation Verification Testing of DAE
+1. Download DAE Portable Software Instance from ShopZ
+2. Deploy DAE Portable Software Instance to your z/OS system
+3. Customise DAE, to create an operational Liberty Server for it
+4. Installation Verification Testing of DAE
 
 ## Step 7: Configure DAF to utilise Db2 Automation Experience
-* Configure DAF to access DAE
-* Test the management of housekeeping profiles from DAF
+1. Configure DAF to access DAE
+2. Test the management of housekeeping profiles from DAF
 
 # Step 8: Deploy Db2 Devops Experience
-* Download Db2 Devops Portable Software Instance from ShopZ
-* Deploy Db2 Devops Portable Software Instance to your z/OS system
-* Customise Db2 Devops, to enable provisioning of DDL objects for development
-* Installation Verification Testing of Db2 Devops
+1. Download Db2 Devops Portable Software Instance from ShopZ
+2. Deploy Db2 Devops Portable Software Instance to your z/OS system
+3. Customise Db2 Devops, to enable provisioning of DDL objects for development
+4. Installation Verification Testing of Db2 Devops
 
 # Step 9: Configure DAF to utilise Db2 Devops Experience
-* Not sure what's imvolved yet
+1. Not sure what's imvolved yet
+2. or more
 
 
