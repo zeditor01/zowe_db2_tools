@@ -27,7 +27,7 @@ The Excerises are structured as follows
 2.2 [Deploy QWT Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.2%20QWT%20PSI%20Deploy.md)<br>
 2.3 [Customise QWT, to create an operational Liberty Server for it](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_customise.md)<br>
 2.4 [Installation Verification Testing of QWT](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/qwt_ivp.md)<br>
-2.5 Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services<br>
+2.5 [Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.5%20QWT%20Usage%20from%20VSCODE.md)<br>
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
 1. Download UMS and DAF Portable Software Instance from ShopZ
