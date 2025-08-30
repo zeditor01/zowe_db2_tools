@@ -1,0 +1,20 @@
+[home](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/ZPDT_Build_Path.md)
+
+# 3.3 DAF and UMS : Customise
+
+## Scope of this page
+
+This page provides a worked example of downloading the Portable Software Instance of Query Workload Tuner (DAF and UMS) from ShopZ download server to your z/OS image.
+
+## Starting point
+
+It is assumed that you have already ordered QWT from ShopZ. The order should provide you with a SERVER XML block that allows you to perform a secure download from Shop Z. 
+
+The ShopZ download credentials are valid for a short period, and these ones have since expired. You need to order your copy of QWT through ShopZ using your company's login account.
+
+
+
+
+
+
+[home](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/ZPDT_Build_Path.md)
