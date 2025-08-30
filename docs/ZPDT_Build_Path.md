@@ -30,6 +30,13 @@ The Excerises are structured as follows
 2.5 [Testing the Db2 for z/OS Developer Extension for VSCODE to invoke SQL Tuning Services](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/2.5%20QWT%20Usage%20from%20VSCODE.md)<br>
 
 ## Step 3: Deploy UMS and DAF underneath Zowe.
+3.1 Download UMS and DAF Portable Software Instance from ShopZ
+3.2 Deploy UMS and DAF Portable Software Instance to your z/OS system
+3.3 Customise UMS and DAF, to create an operational Liberty Server for it
+3.4 Installation Verification Testing of UMS and DAF
+
+
+
 1. Download UMS and DAF Portable Software Instance from ShopZ
 2. Deploy UMS and DAF Portable Software Instance to your z/OS system
 3. Customise UMS and DAF, to create an operational Liberty Server for it
