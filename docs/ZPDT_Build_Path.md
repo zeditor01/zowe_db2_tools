@@ -46,7 +46,7 @@ The Excerises are structured as follows
 2. Test the invocation of SQL Tuning Services from DAF.
 
 ## Step 6: Deploy Db2 Automation Experience
-6.1 [Download DAE Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.2%20DAE%20Download.md)<br>
+6.1 [Download DAE Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.2%20DAE%20PSI%20Deploy.md)<br>
 6.2 [Deploy DAE Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.2%20DAE%20PSI%20Deploy.md)<br>
 3. Customise DAE, to create an operational Liberty Server for it
 4. Installation Verification Testing of DAE
