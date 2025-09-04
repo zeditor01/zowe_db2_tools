@@ -13,7 +13,7 @@ The exercises are written to to allow a new-to-Z technical professional to gain 
 * UMS = Unified Management Server. (a software framework into which Db2 and IMS tools are deployed)
 * DAF = Db2 Administration Foundation. (the core Db2 z/OS experience for UMS)
 * DAE = Db2 Automation Experience. (the Db2 Experience for automation fo housekeeping tasks)
-* Db2 Devops = Db2 Devops Experience. (The Db2 Experience for provisioning Db2 database objects for CI/CD development projects)
+* DOE = Db2 Devops Experience. (The Db2 Experience for provisioning Db2 database objects for CI/CD development projects)
 * CI/CD = Continuous Integration and Continuous Delivery.
 
 The Excerises are structured as follows
@@ -46,8 +46,8 @@ The Excerises are structured as follows
 2. Test the invocation of SQL Tuning Services from DAF.
 
 ## Step 6: Deploy Db2 Automation Experience
-1. Download DAE Portable Software Instance from ShopZ
-2. Deploy DAE Portable Software Instance to your z/OS system
+6.1 [Download DAE Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.1%20DAE%20Download.md)<br>
+6.2 [Deploy DAE Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.2%20DAE%20PSI%20Deploy.md)<br>
 3. Customise DAE, to create an operational Liberty Server for it
 4. Installation Verification Testing of DAE
 
@@ -56,8 +56,8 @@ The Excerises are structured as follows
 2. Test the management of housekeeping profiles from DAF
 
 # Step 8: Deploy Db2 Devops Experience
-1. Download Db2 Devops Portable Software Instance from ShopZ
-2. Deploy Db2 Devops Portable Software Instance to your z/OS system
+8.1 [Download DOE Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/8.1%20DOE%20Download.md)<br>
+8.2 [Deploy DOE Portable Software Instance to your z/OS system](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/8.2%20DOE%20PSI%20Deploy.md)<br>
 3. Customise Db2 Devops, to enable provisioning of DDL objects for development
 4. Installation Verification Testing of Db2 Devops
 
