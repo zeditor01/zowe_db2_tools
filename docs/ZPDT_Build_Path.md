@@ -37,13 +37,12 @@ The Excerises are structured as follows
 
   
 ## Step 4: Configure DAF to utilise the Db2 Administration Tool.
-1. Check the pre-requisite maintenance for Db2 Administration Tool.
-2. Configure access to the integration load libraries
-3. Test the additional function from DAF
+4.1 [Configure Integration with Db2 Administration Tool]()<br>
+4.2 [Validate Integration with Db2 Administration Tool]()<br>
 
 ## Step 5: Configure DAF to utilise SQL Tuning Services
-1. Configure DAF to access QWT
-2. Test the invocation of SQL Tuning Services from DAF.
+5.1 [Configure Integration with Query Workload Tuner]()<br>
+5.2 [Validate Integration with Query Workload Tuner]()<br>
 
 ## Step 6: Deploy Db2 Automation Experience
 6.1 [Download DAE Portable Software Instance from ShopZ](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/6.1%20DAE%20Download.md)<br>
