@@ -41,7 +41,7 @@ The Excerises are structured as follows
 4.2 [Validate Integration with Db2 Administration Tool]()<br>
 
 ## Step 5: Configure DAF to utilise SQL Tuning Services
-5.1 [Configure Integration with Query Workload Tuner]()<br>
+5.1 [Configure Integration with Query Workload Tuner](https://github.com/zeditor01/zowe_db2_tools/blob/main/docs/5.1%20Configure%20Integration%20with%20QWT.md)<br>
 5.2 [Validate Integration with Query Workload Tuner]()<br>
 
 ## Step 6: Deploy Db2 Automation Experience
